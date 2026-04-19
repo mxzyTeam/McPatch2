@@ -40,7 +40,7 @@ const Index = () => {
         <div className="mt-2 pt-4 pb-2">
           <FolderButtonGroup path={path} getFileList={getFileList}/>
         </div>
-        <div className="flex-1 mt-2 h-full bg-gray-100 dark:bg-gray-800">
+        <div className="flex-1 mt-2 h-full neu-raised p-4">
           <TileViewFileExplorer
             path={path}
             getFileList={getFileList}

@@ -20,17 +20,17 @@ const Index = () => {
 
   return (
     <>
-      <div className="w-screen h-screen flex flex-col justify-center items-center space-y-4">
+      <div className="w-screen h-screen flex flex-col justify-center items-center space-y-6 px-4">
         <h2
-          className="text-transparent bg-clip-text bg-gradient-to-r from-[#4F46E5] to-[#E114E5] text-4xl font-extrabold md:text-5xl">
+          className="text-5xl md:text-6xl font-extrabold text-[#5a7d8f] dark:text-[#D4AF37] tracking-tight">
           McPatch
         </h2>
-        <p className={`max-w-2xl mx-auto text-center dark:text-white`}>
+        <p className={`max-w-2xl mx-auto text-center text-[#636e72] dark:text-[#9E8E6E]`}>
           McPatch 是一个给 Minecraft 客户端做文件更新的独立应用程序.只要你想,你可以通过这个程序向你服务器的玩家提供一切内容.
         </p>
         <button
           onClick={() => checkStatus()}
-          className="px-6 py-3.5 text-white bg-indigo-600 rounded-full duration-150 hover:bg-indigo-500 active:bg-indigo-700">
+          className="neu-btn-primary px-8 py-3.5 text-base font-medium rounded-full">
           即刻开始!
         </button>
       </div>

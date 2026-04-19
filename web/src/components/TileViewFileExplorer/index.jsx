@@ -95,7 +95,7 @@ const Index = ({path, getFileList, items, handlerNextPath}) => {
         isOpen ?
           <div
             ref={menuRef}
-            className="absolute bg-white dark:bg-gray-900 rounded-md shadow-lg w-60"
+            className="fixed neu-raised-sm w-60 z-50"
             style={{
               left: `${menuPosition.x}px`,
               top: `${menuPosition.y}px`,
@@ -106,7 +106,7 @@ const Index = ({path, getFileList, items, handlerNextPath}) => {
           >
             <div className="p-1">
               <div
-                className="flex flex-col rounded-md w-full p-2 text-sm cursor-pointer hover:bg-gray-200 dark:hover:bg-gray-800 duration-200">
+                className="flex flex-col rounded-xl w-full p-3 text-sm neu-inset-xs mb-1 cursor-pointer">
                 <div className="text-item">名称: {selectedItem.name}</div>
                 <div className="text-item">类型: {selectedItem.is_directory ? "文件夹" : "文件"}</div>
                 <div className="text-item">大小: {showFileSize(selectedItem.size)}</div>
@@ -119,7 +119,7 @@ const Index = ({path, getFileList, items, handlerNextPath}) => {
                 <>
                   <button
                     onClick={() => fsOpenOrDownload(selectedItem)}
-                    className="flex items-center rounded-md w-full p-2 text-sm text-indigo-500 hover:bg-indigo-100 dark:hover:bg-gray-800 duration-200">
+                    className="flex items-center rounded-xl w-full p-2 text-sm text-[#5a7d8f] dark:text-[#D4AF37] hover:bg-[rgba(90,125,143,0.1)] dark:hover:bg-[rgba(212,175,55,0.1)] duration-200">
                     打开
                   </button>
                 </>
@@ -129,7 +129,7 @@ const Index = ({path, getFileList, items, handlerNextPath}) => {
                 <>
                   <button
                     onClick={() => fsOpenOrDownload(selectedItem)}
-                    className="flex items-center rounded-md w-full p-2 text-sm text-indigo-500 hover:bg-indigo-100 dark:hover:bg-gray-800 duration-200">
+                    className="flex items-center rounded-xl w-full p-2 text-sm text-[#5a7d8f] dark:text-[#D4AF37] hover:bg-[rgba(90,125,143,0.1)] dark:hover:bg-[rgba(212,175,55,0.1)] duration-200">
                     下载
                   </button>
                 </>
@@ -137,7 +137,7 @@ const Index = ({path, getFileList, items, handlerNextPath}) => {
               {
                 <button
                   onClick={() => fsDelete(selectedItem)}
-                  className="flex items-center rounded-md w-full p-2 text-sm text-red-500 hover:bg-red-100 dark:hover:bg-gray-800 duration-200">
+                  className="flex items-center rounded-xl w-full p-2 text-sm text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 duration-200">
                   删除
                 </button>
               }

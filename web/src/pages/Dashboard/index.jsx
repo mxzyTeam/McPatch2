@@ -76,11 +76,11 @@ const Index = () => {
       {contextHolder}
       <div className="flex">
         <div
-          className="fixed top-0 left-0 w-full h-full border-r dark:border-gray-900 bg-white dark:bg-gray-950 space-y-8 sm:w-60">
+          className="fixed top-0 left-0 w-full h-full sm:w-60 neu-raised rounded-none rounded-r-2xl">
           <div className="flex flex-col h-full">
             <div className='h-20 flex justify-center items-center px-8'>
               <div className='flex-none cursor-pointer' onClick={() => navigate('/')}>
-                <div className="text-3xl font-bold text-indigo-600">McPatch</div>
+                <div className="text-3xl font-bold text-[#5a7d8f] dark:text-[#D4AF37]">McPatch</div>
               </div>
             </div>
             <div className="flex-1 flex flex-col h-full overflow-auto">
@@ -91,8 +91,13 @@ const Index = () => {
                     return (
                       <li key={idx}>
                         <div onClick={() => navigate(item.nav)}
-                             className={`flex items-center gap-x-2 text-gray-600 dark:text-white p-2 rounded-lg cursor-pointer ${isActive ? 'bg-gray-100 dark:bg-gray-800' : 'hover:bg-gray-50 dark:hover:bg-gray-900 active:bg-gray-100 dark:active:bg-gray-800 duration-150'}`}>
-                          <div className="text-gray-500 dark:text-white">{item.icon}</div>
+                             className={`flex items-center gap-x-2 p-3 rounded-xl cursor-pointer transition-all duration-150 ${
+                               isActive
+                                 ? 'neu-inset-sm text-[#5a7d8f] dark:text-[#D4AF37] font-semibold'
+                                 : 'text-[#636e72] dark:text-[#9E8E6E] hover:text-[#2d3436] dark:hover:text-[#E8D5A3]'
+                             }`}
+                             style={!isActive ? {boxShadow: '3px 3px 6px var(--neu-shadow-dark), -3px -3px 6px var(--neu-shadow-light)', background: 'transparent'} : undefined}>
+                          <div className={isActive ? 'text-[#5a7d8f] dark:text-[#D4AF37]' : 'text-[#636e72] dark:text-[#9E8E6E]'}>{item.icon}</div>
                           {item.name}
                         </div>
                       </li>
@@ -108,8 +113,13 @@ const Index = () => {
                       return (
                         <li key={idx}>
                           <div onClick={() => navigate(item.nav)}
-                               className={`flex items-center gap-x-2 text-gray-600 dark:text-white p-2 rounded-lg cursor-pointer ${isActive ? 'bg-gray-100 dark:bg-gray-800' : 'hover:bg-gray-50 dark:hover:bg-gray-900 active:bg-gray-100 dark:active:bg-gray-800 duration-150'}`}>
-                            <div className="text-gray-500 dark:text-white">{item.icon}</div>
+                               className={`flex items-center gap-x-2 p-3 rounded-xl cursor-pointer transition-all duration-150 ${
+                                 isActive
+                                   ? 'neu-inset-sm text-[#5a7d8f] dark:text-[#D4AF37] font-semibold'
+                                   : 'text-[#636e72] dark:text-[#9E8E6E] hover:text-[#2d3436] dark:hover:text-[#E8D5A3]'
+                               }`}
+                               style={!isActive ? {boxShadow: '3px 3px 6px var(--neu-shadow-dark), -3px -3px 6px var(--neu-shadow-light)', background: 'transparent'} : undefined}>
+                            <div className={isActive ? 'text-[#5a7d8f] dark:text-[#D4AF37]' : 'text-[#636e72] dark:text-[#9E8E6E]'}>{item.icon}</div>
                             {item.name}
                           </div>
                         </li>
@@ -119,18 +129,20 @@ const Index = () => {
                   <li>
                     <div
                       onClick={() => signOut()}
-                      className={`flex items-center gap-x-2 text-gray-600 dark:text-white p-2 rounded-lg cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-900 active:bg-gray-100 dark:active:bg-gray-800 duration-150}`}>
-                      <div className="text-gray-500 dark:text-white"><LogOut size={16} strokeWidth={1.5}/></div>
+                      className={`flex items-center gap-x-2 text-[#636e72] dark:text-[#9E8E6E] p-3 rounded-xl cursor-pointer hover:text-red-500 transition-colors duration-150`}
+                      style={{boxShadow: '3px 3px 6px var(--neu-shadow-dark), -3px -3px 6px var(--neu-shadow-light)', background: 'transparent'}}>
+                      <div className="text-[#636e72] dark:text-[#9E8E6E]"><LogOut size={16} strokeWidth={1.5}/></div>
                       退出登录
                     </div>
                   </li>
                 </ul>
-                <div className="py-4 px-4 border-t dark:border-gray-900">
-                  <div className="flex items-center gap-x-4">
-                    {/*<img src="" className="w-12 h-12 rounded-full"/>*/}
-                    <CircleUserRound className="dark:text-white" size={40} strokeWidth={1.0}/>
+                <div className="py-4 px-4">
+                  <div className="neu-raised-xs p-3 flex items-center gap-x-4">
+                    <CircleUserRound className="text-[#5a7d8f] dark:text-[#D4AF37]" size={36} strokeWidth={1.0}/>
                     <div>
-                      <span className="block text-gray-700 dark:text-white text-sm font-semibold">ADMIN</span>
+                      <span className="block text-[#2d3436] dark:text-[#E8D5A3] text-sm font-semibold">
+                        {user.username || 'ADMIN'}
+                      </span>
                     </div>
                   </div>
                 </div>
