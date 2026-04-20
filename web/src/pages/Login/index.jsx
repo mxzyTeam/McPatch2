@@ -3,6 +3,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {userLogin} from "@/store/modules/userStore.js";
 import {message} from "antd";
 import {useEffect, useState} from "react";
+import {useBounceClick, useRipple} from "@/utils/animations.js";
 
 const Index = () => {
 
@@ -12,6 +13,8 @@ const Index = () => {
   const dispatch = useDispatch()
   const [messageApi, contextHolder] = message.useMessage();
   const user = useSelector(state => state.user)
+  const { bounceClass, handleBounceClick, handleAnimationEnd } = useBounceClick();
+  const { ripples, addRipple } = useRipple();
 
   useEffect(() => {
     if (user.username) {
@@ -50,6 +53,11 @@ const Index = () => {
       messageApi.error(msg);
     }
   }
+
+  const handleButtonClick = (e) => {
+    addRipple(e);
+    handleBounceClick(e);
+  };
 
   return (
     <>
@@ -93,9 +101,23 @@ const Index = () => {
                  className="text-center text-[#5a7d8f] dark:text-[#D4AF37] hover:text-[#7fa8bc] dark:hover:text-[#D4AF37] transition-colors duration-200">忘记密码?</a>
             </div>
             <button
-              className="neu-btn-primary w-full px-4 py-3 font-medium"
+              onClick={handleButtonClick}
+              onAnimationEnd={handleAnimationEnd}
+              className={`neu-btn-primary neu-ripple-container w-full px-4 py-3 font-medium ${bounceClass}`}
               type="submit">
               登录
+              {ripples.map(r => (
+                <span
+                  key={r.id}
+                  className="neu-ripple"
+                  style={{
+                    left: r.x - r.size / 2,
+                    top: r.y - r.size / 2,
+                    width: r.size,
+                    height: r.size,
+                  }}
+                />
+              ))}
             </button>
           </form>
         </div>

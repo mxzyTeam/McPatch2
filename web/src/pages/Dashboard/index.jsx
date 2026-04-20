@@ -4,7 +4,7 @@ import {userCheckTokenRequest, userSignOutRequest} from "@/api/user.js";
 import {message} from "antd";
 import {useDispatch, useSelector} from "react-redux";
 import {clearToken} from "@/store/modules/userStore.js";
-import {useEffect} from "react";
+import {useEffect, useState} from "react";
 
 const navs = [
   {
@@ -44,10 +44,16 @@ const Index = () => {
   const user = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const [messageApi, contextHolder] = message.useMessage();
+  const [pageKey, setPageKey] = useState(0);
 
   useEffect(() => {
     checkToken()
   }, []);
+
+  // Re-trigger page enter animation on route change
+  useEffect(() => {
+    setPageKey(prev => prev + 1);
+  }, [location.pathname]);
 
   const checkToken = async () => {
     if (!user.token) {
@@ -152,7 +158,7 @@ const Index = () => {
         </div>
 
         <div className="ml-60 flex-grow">
-          <div key={location.pathname} className="neu-page-enter">
+          <div key={pageKey} className="neu-page-enter">
             <Outlet/>
           </div>
         </div>

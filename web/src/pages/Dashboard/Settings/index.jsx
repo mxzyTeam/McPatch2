@@ -4,12 +4,15 @@ import {userChangePasswordRequest, userChangeUsernameRequest} from "@/api/user.j
 import {useNavigate} from "react-router-dom";
 import {useDispatch} from "react-redux";
 import {clearToken} from "@/store/modules/userStore.js";
+import {useBounceClick, useRipple} from "@/utils/animations.js";
 
 const Index = () => {
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [messageApi, contextHolder] = message.useMessage();
+  const { bounceClass, handleBounceClick, handleAnimationEnd } = useBounceClick();
+  const { ripples, addRipple } = useRipple();
 
   const submitChangeUsername = async (values) => {
     const {code, msg, data} = await userChangeUsernameRequest(values.newUsername);
@@ -31,6 +34,11 @@ const Index = () => {
     }
   }
 
+  const handleButtonClick = (e) => {
+    addRipple(e);
+    handleBounceClick(e);
+  };
+
   return (
     <>
       {contextHolder}
@@ -44,7 +52,26 @@ const Index = () => {
               <Input placeholder="请输入想要设置的新用户名."/>
             </Form.Item>
             <Form.Item>
-              <Button type="primary" htmlType="submit" className="w-full">保存</Button>
+              <Button
+                type="primary"
+                htmlType="submit"
+                className={`w-full neu-ripple-container ${bounceClass}`}
+                onClick={handleButtonClick}
+                onAnimationEnd={handleAnimationEnd}>
+                保存
+                {ripples.map(r => (
+                  <span
+                    key={r.id}
+                    className="neu-ripple"
+                    style={{
+                      left: r.x - r.size / 2,
+                      top: r.y - r.size / 2,
+                      width: r.size,
+                      height: r.size,
+                    }}
+                  />
+                ))}
+              </Button>
             </Form.Item>
           </Form>
         </Card>
@@ -60,7 +87,26 @@ const Index = () => {
               <Input placeholder="请输入想要设置的新密码."/>
             </Form.Item>
             <Form.Item>
-              <Button type="primary" htmlType="submit" className="w-full">保存</Button>
+              <Button
+                type="primary"
+                htmlType="submit"
+                className={`w-full neu-ripple-container ${bounceClass}`}
+                onClick={handleButtonClick}
+                onAnimationEnd={handleAnimationEnd}>
+                保存
+                {ripples.map(r => (
+                  <span
+                    key={r.id}
+                    className="neu-ripple"
+                    style={{
+                      left: r.x - r.size / 2,
+                      top: r.y - r.size / 2,
+                      width: r.size,
+                      height: r.size,
+                    }}
+                  />
+                ))}
+              </Button>
             </Form.Item>
           </Form>
         </Card>

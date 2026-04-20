@@ -3,6 +3,7 @@ import {useEffect, useState} from "react";
 
 const Index = () => {
   const [diskInfo, setDiskInfo] = useState({total: 0, used: 0});
+  const [visible, setVisible] = useState(false);
 
   const getDiskInfo = async () => {
     const {code, msg, data} = await fsDiskInfoRequest();
@@ -13,6 +14,8 @@ const Index = () => {
 
   useEffect(() => {
     getDiskInfo()
+    // Trigger entrance animation after mount
+    requestAnimationFrame(() => setVisible(true));
   }, []);
 
   const percent = diskInfo.total > 0 ? (diskInfo.used / diskInfo.total * 100).toFixed(2) : '0.00'

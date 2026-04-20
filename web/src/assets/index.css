@@ -40,7 +40,7 @@ html, body {
   padding: 0;
 }
 
-/* Background layer for smooth theme transition (gradients can't transition) */
+/* Background layer for smooth theme transition */
 body::before {
   content: '';
   position: fixed;
@@ -130,13 +130,14 @@ body::before {
 }
 
 /* ============================================
-   Page Transition Animations
+   KEYFRAME ANIMATIONS
    ============================================ */
 
+/* Page slide-in from bottom */
 @keyframes neuPageEnter {
   0% {
     opacity: 0;
-    transform: translateY(24px);
+    transform: translateY(40px);
   }
   100% {
     opacity: 1;
@@ -144,18 +145,11 @@ body::before {
   }
 }
 
-.neu-page-enter {
-  animation: neuPageEnter 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
-}
-
-/* ============================================
-   Card Entrance Animations
-   ============================================ */
-
+/* Card entrance with scale + fade */
 @keyframes neuCardEnter {
   0% {
     opacity: 0;
-    transform: translateY(30px) scale(0.95);
+    transform: translateY(40px) scale(0.92);
   }
   100% {
     opacity: 1;
@@ -163,10 +157,11 @@ body::before {
   }
 }
 
+/* Card entrance from left */
 @keyframes neuCardEnterLeft {
   0% {
     opacity: 0;
-    transform: translateX(-30px);
+    transform: translateX(-40px);
   }
   100% {
     opacity: 1;
@@ -174,10 +169,11 @@ body::before {
   }
 }
 
+/* Card entrance with scale only */
 @keyframes neuCardEnterScale {
   0% {
     opacity: 0;
-    transform: scale(0.9);
+    transform: scale(0.85);
   }
   100% {
     opacity: 1;
@@ -185,27 +181,166 @@ body::before {
   }
 }
 
+/* Button bounce click - JS triggered */
+@keyframes neuBounceClick {
+  0% { transform: scale(1); }
+  25% { transform: scale(0.9); }
+  50% { transform: scale(1.06); }
+  75% { transform: scale(0.98); }
+  100% { transform: scale(1); }
+}
+
+/* Ripple effect for clicks */
+@keyframes neuRipple {
+  0% {
+    transform: scale(0);
+    opacity: 0.6;
+  }
+  100% {
+    transform: scale(4);
+    opacity: 0;
+  }
+}
+
+/* Float animation for decorative elements */
+@keyframes neuFloat {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-12px); }
+}
+
+/* Progress bar shimmer */
+@keyframes neuShimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* Input focus glow pulse */
+@keyframes neuInputGlow {
+  0%, 100% {
+    box-shadow: inset 3px 3px 6px var(--neu-shadow-dark), inset -3px -3px 6px var(--neu-shadow-light), 0 0 0 2px var(--neu-accent);
+  }
+  50% {
+    box-shadow: inset 3px 3px 6px var(--neu-shadow-dark), inset -3px -3px 6px var(--neu-shadow-light), 0 0 0 4px var(--neu-accent), 0 0 20px rgba(90,125,143,0.25);
+  }
+}
+
+/* Rotate in animation */
+@keyframes neuRotateIn {
+  0% { transform: rotate(-180deg) scale(0.5); opacity: 0; }
+  100% { transform: rotate(0deg) scale(1); opacity: 1; }
+}
+
+/* Modal entrance */
+@keyframes neuModalEnter {
+  0% {
+    opacity: 0;
+    transform: scale(0.85) translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+/* Message entrance */
+@keyframes neuMsgEnter {
+  0% {
+    opacity: 0;
+    transform: translateY(-20px) scale(0.9);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Pulse glow for active elements */
+@keyframes neuPulse {
+  0%, 100% {
+    box-shadow: 4px 4px 8px var(--neu-shadow-dark), -4px -4px 8px var(--neu-shadow-light), 0 0 0 transparent;
+  }
+  50% {
+    box-shadow: 4px 4px 8px var(--neu-shadow-dark), -4px -4px 8px var(--neu-shadow-light), 0 0 24px rgba(90,125,143,0.4);
+  }
+}
+
+@keyframes neuPulseDark {
+  0%, 100% {
+    box-shadow: 4px 4px 8px var(--neu-shadow-dark), -4px -4px 8px var(--neu-shadow-light), 0 0 0 transparent;
+  }
+  50% {
+    box-shadow: 4px 4px 8px var(--neu-shadow-dark), -4px -4px 8px var(--neu-shadow-light), 0 0 24px rgba(212,175,55,0.4);
+  }
+}
+
+/* Skeleton pulse */
+@keyframes neuSkeletonPulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+
+/* Nav indicator slide */
+@keyframes neuNavSlide {
+  0% { transform: translateY(-50%) scaleY(0); }
+  100% { transform: translateY(-50%) scaleY(1); }
+}
+
+/* ============================================
+   ANIMATION UTILITY CLASSES
+   (JS will toggle these, NOT :active pseudo-class)
+   ============================================ */
+
+/* Page enter - applied via key={} remount */
+.neu-page-enter {
+  animation: neuPageEnter 0.6s cubic-bezier(0.22, 1, 0.36, 1) both !important;
+}
+
+/* Card entrance animations */
 .neu-card-enter {
-  animation: neuCardEnter 0.6s cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation: neuCardEnter 0.7s cubic-bezier(0.22, 1, 0.36, 1) both !important;
 }
 
 .neu-card-enter-left {
-  animation: neuCardEnterLeft 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation: neuCardEnterLeft 0.6s cubic-bezier(0.22, 1, 0.36, 1) both !important;
 }
 
 .neu-card-enter-scale {
-  animation: neuCardEnterScale 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation: neuCardEnterScale 0.6s cubic-bezier(0.22, 1, 0.36, 1) both !important;
 }
 
-/* Staggered entrance - use with neu-card-enter */
-.neu-stagger-1 { animation-delay: 0.08s; }
-.neu-stagger-2 { animation-delay: 0.16s; }
-.neu-stagger-3 { animation-delay: 0.24s; }
-.neu-stagger-4 { animation-delay: 0.32s; }
-.neu-stagger-5 { animation-delay: 0.4s; }
+/* Staggered entrance delays */
+.neu-stagger-1 { animation-delay: 0.1s !important; }
+.neu-stagger-2 { animation-delay: 0.2s !important; }
+.neu-stagger-3 { animation-delay: 0.3s !important; }
+.neu-stagger-4 { animation-delay: 0.4s !important; }
+.neu-stagger-5 { animation-delay: 0.5s !important; }
+
+/* Button bounce - toggled by JS onClick, removed on onAnimationEnd */
+.neu-btn-bounce {
+  animation: neuBounceClick 0.5s cubic-bezier(0.22, 1, 0.36, 1) !important;
+}
+
+/* Float - infinite loop */
+.neu-float {
+  animation: neuFloat 3s ease-in-out infinite !important;
+}
+
+/* Rotate in */
+.neu-rotate-in {
+  animation: neuRotateIn 0.5s cubic-bezier(0.22, 1, 0.36, 1) !important;
+}
+
+/* Pulse glow */
+.neu-pulse-active {
+  animation: neuPulse 2s ease-in-out infinite !important;
+}
+
+.dark .neu-pulse-active {
+  animation: neuPulseDark 2s ease-in-out infinite !important;
+}
 
 /* ============================================
-   Button Styles with Click Animations
+   BUTTON STYLES
    ============================================ */
 
 .neu-btn {
@@ -233,14 +368,7 @@ body::before {
     inset -3px -3px 6px var(--neu-shadow-light);
 }
 
-/* Primary button with bounce click */
-@keyframes neuBounceClick {
-  0% { transform: scale(1); }
-  30% { transform: scale(0.92); }
-  60% { transform: scale(1.04); }
-  100% { transform: scale(1); }
-}
-
+/* Primary button with hover/click effects */
 .neu-btn-primary {
   background: linear-gradient(135deg, var(--neu-accent), var(--neu-accent-light));
   border-radius: 12px;
@@ -251,6 +379,8 @@ body::before {
   border: none;
   cursor: pointer;
   color: #ffffff;
+  position: relative;
+  overflow: hidden;
 }
 
 .dark .neu-btn-primary {
@@ -274,14 +404,32 @@ body::before {
 }
 
 .neu-btn-primary:active {
-  animation: neuBounceClick 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+  transform: translateY(1px) scale(0.97);
   box-shadow:
     inset 3px 3px 6px rgba(0,0,0,0.25),
     inset -3px -3px 6px rgba(255,255,255,0.1);
 }
 
+/* Ripple container for button click effects */
+.neu-ripple-container {
+  position: relative;
+  overflow: hidden;
+}
+
+.neu-ripple {
+  position: absolute;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.4);
+  animation: neuRipple 0.6s ease-out forwards;
+  pointer-events: none;
+}
+
+.dark .neu-ripple {
+  background: rgba(212, 175, 55, 0.3);
+}
+
 /* ============================================
-   Input Styles with Focus Animation
+   INPUT STYLES
    ============================================ */
 
 .neu-input {
@@ -294,27 +442,18 @@ body::before {
   transition: all 0.3s ease;
 }
 
-@keyframes neuInputGlow {
-  0%, 100% {
-    box-shadow: inset 3px 3px 6px var(--neu-shadow-dark), inset -3px -3px 6px var(--neu-shadow-light), 0 0 0 2px var(--neu-accent);
-  }
-  50% {
-    box-shadow: inset 3px 3px 6px var(--neu-shadow-dark), inset -3px -3px 6px var(--neu-shadow-light), 0 0 0 4px var(--neu-accent), 0 0 16px rgba(90,125,143,0.2);
-  }
-}
-
-.dark .neu-input:focus {
-  box-shadow: inset 3px 3px 6px var(--neu-shadow-dark), inset -3px -3px 6px var(--neu-shadow-light), 0 0 0 3px var(--neu-accent), 0 0 20px rgba(212,175,55,0.25);
+.neu-input:focus {
+  animation: neuInputGlow 2s ease-in-out infinite !important;
   outline: none;
 }
 
-.neu-input:focus {
-  animation: neuInputGlow 2s ease-in-out infinite;
+.dark .neu-input:focus {
+  box-shadow: inset 3px 3px 6px var(--neu-shadow-dark), inset -3px -3px 6px var(--neu-shadow-light), 0 0 0 3px var(--neu-accent), 0 0 20px rgba(212,175,55,0.25) !important;
   outline: none;
 }
 
 /* ============================================
-   Progress Bar with Shimmer
+   PROGRESS BAR
    ============================================ */
 
 .neu-progress-track {
@@ -326,11 +465,6 @@ body::before {
   overflow: hidden;
 }
 
-@keyframes neuShimmer {
-  0% { background-position: 200% 0; }
-  100% { background-position: -200% 0; }
-}
-
 .neu-progress-fill {
   background: linear-gradient(
     90deg,
@@ -340,7 +474,7 @@ body::before {
     var(--neu-accent-light) 100%
   );
   background-size: 200% 100%;
-  animation: neuShimmer 2s linear infinite;
+  animation: neuShimmer 2s linear infinite !important;
   border-radius: 12px;
   transition: width 0.6s cubic-bezier(0.22, 1, 0.36, 1);
   box-shadow:
@@ -355,7 +489,7 @@ body::before {
 }
 
 /* ============================================
-   Terminal Styling
+   TERMINAL
    ============================================ */
 
 .neu-terminal {
@@ -374,7 +508,7 @@ body::before {
 }
 
 /* ============================================
-   Custom Scrollbar
+   SCROLLBAR
    ============================================ */
 
 ::-webkit-scrollbar {
@@ -401,50 +535,7 @@ body::before {
 }
 
 /* ============================================
-   Floating Animation
-   ============================================ */
-
-@keyframes neuFloat {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-8px); }
-}
-
-.neu-float {
-  animation: neuFloat 3s ease-in-out infinite;
-}
-
-/* ============================================
-   Pulse Glow for Active Elements
-   ============================================ */
-
-@keyframes neuPulse {
-  0%, 100% {
-    box-shadow: 4px 4px 8px var(--neu-shadow-dark), -4px -4px 8px var(--neu-shadow-light), 0 0 0 transparent;
-  }
-  50% {
-    box-shadow: 4px 4px 8px var(--neu-shadow-dark), -4px -4px 8px var(--neu-shadow-light), 0 0 20px rgba(90,125,143,0.35);
-  }
-}
-
-@keyframes neuPulseDark {
-  0%, 100% {
-    box-shadow: 4px 4px 8px var(--neu-shadow-dark), -4px -4px 8px var(--neu-shadow-light), 0 0 0 transparent;
-  }
-  50% {
-    box-shadow: 4px 4px 8px var(--neu-shadow-dark), -4px -4px 8px var(--neu-shadow-light), 0 0 20px rgba(212,175,55,0.35);
-  }
-}
-
-.neu-pulse-active {
-  animation: neuPulse 2s ease-in-out infinite;
-}
-
-.dark .neu-pulse-active {
-  animation: neuPulseDark 2s ease-in-out infinite;
-}
-
-/* ============================================
-   Sidebar Navigation Animations
+   SIDEBAR NAVIGATION
    ============================================ */
 
 .neu-nav-item {
@@ -466,67 +557,16 @@ body::before {
 }
 
 .neu-nav-active::before {
+  animation: neuNavSlide 0.3s cubic-bezier(0.22, 1, 0.36, 1) forwards !important;
   transform: translateY(-50%) scaleY(1);
 }
 
-/* Nav item hover ripple */
 .neu-nav-item:hover {
   transform: translateX(4px);
 }
 
 /* ============================================
-   FloatButton Rotation Animation
-   ============================================ */
-
-@keyframes neuRotateIn {
-  0% { transform: rotate(-180deg) scale(0.5); opacity: 0; }
-  100% { transform: rotate(0deg) scale(1); opacity: 1; }
-}
-
-.neu-rotate-in {
-  animation: neuRotateIn 0.5s cubic-bezier(0.22, 1, 0.36, 1);
-}
-
-/* ============================================
-   Modal Animation
-   ============================================ */
-
-@keyframes neuModalEnter {
-  0% {
-    opacity: 0;
-    transform: scale(0.88) translateY(20px);
-  }
-  100% {
-    opacity: 1;
-    transform: scale(1) translateY(0);
-  }
-}
-
-.ant-modal-content {
-  animation: neuModalEnter 0.4s cubic-bezier(0.22, 1, 0.36, 1);
-}
-
-/* ============================================
-   Message Notification Animation
-   ============================================ */
-
-@keyframes neuMsgEnter {
-  0% {
-    opacity: 0;
-    transform: translateY(-20px) scale(0.9);
-  }
-  100% {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-  }
-}
-
-.ant-message-notice {
-  animation: neuMsgEnter 0.35s cubic-bezier(0.22, 1, 0.36, 1);
-}
-
-/* ============================================
-   Hover Glow Effect
+   HOVER EFFECTS
    ============================================ */
 
 .neu-glow-hover {
@@ -548,10 +588,6 @@ body::before {
     0 0 25px rgba(212,175,55,0.2);
 }
 
-/* ============================================
-   File Item Hover Pop
-   ============================================ */
-
 .neu-item-hover {
   transition: all 0.25s cubic-bezier(0.22, 1, 0.36, 1);
 }
@@ -562,13 +598,8 @@ body::before {
 }
 
 /* ============================================
-   Skeleton Loading
+   SKELETON LOADING
    ============================================ */
-
-@keyframes neuSkeletonPulse {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.4; }
-}
 
 .neu-skeleton {
   animation: neuSkeletonPulse 1.5s ease-in-out infinite;
@@ -583,7 +614,7 @@ body::before {
 }
 
 /* ============================================
-   antd Component Overrides with Animations
+   antd Component Overrides
    ============================================ */
 
 /* Primary button */
@@ -615,7 +646,7 @@ body::before {
   box-shadow: 6px 6px 12px var(--neu-shadow-dark), -6px -6px 12px var(--neu-shadow-light), 0 6px 20px rgba(255,77,79,0.3) !important;
 }
 
-/* Dark mode antd overrides - black-gold theme */
+/* Dark mode antd overrides */
 .dark .ant-btn-primary {
   color: #0d0d0d !important;
 }
@@ -669,14 +700,13 @@ body::before {
   color: var(--neu-accent) !important;
 }
 
-/* Dark mode global text */
 .dark .ant-message-notice-content {
   background: #111111 !important;
   color: var(--neu-text) !important;
   box-shadow: 4px 4px 8px #050505, -4px -4px 8px #1a1a1a !important;
 }
 
-/* Card with hover animation */
+/* Card */
 .ant-card {
   background: var(--neu-bg) !important;
   border: none !important;
@@ -699,6 +729,12 @@ body::before {
   background: var(--neu-bg) !important;
   border-radius: 16px !important;
   box-shadow: 8px 8px 16px var(--neu-shadow-dark), -8px -8px 16px var(--neu-shadow-light) !important;
+  animation: neuModalEnter 0.4s cubic-bezier(0.22, 1, 0.36, 1) !important;
+}
+
+/* Message */
+.ant-message-notice {
+  animation: neuMsgEnter 0.35s cubic-bezier(0.22, 1, 0.36, 1) !important;
 }
 
 /* Input */
@@ -742,7 +778,7 @@ body::before {
   box-shadow: 6px 6px 12px var(--neu-shadow-dark), -6px -6px 12px var(--neu-shadow-light) !important;
 }
 
-/* Dark mode input text color */
+/* Dark mode input */
 .dark .ant-input,
 .dark .ant-input-affix-wrapper input {
   color: var(--neu-text) !important;
