@@ -55,15 +55,15 @@ const Index = () => {
     <>
       {contextHolder}
       <div className="w-full h-screen flex flex-col items-center justify-center px-4">
-        <div className="max-w-sm w-full text-gray-500 dark:text-white space-y-5">
-          <div className="text-center pb-8">
-            <div className="text-4xl font-bold text-indigo-600">McPatch</div>
+        <div className="neomorphic max-w-sm w-full text-gray-500 dark:text-white space-y-8 p-8 fade-in">
+          <div className="text-center">
+            <div className="text-4xl font-bold text-gray-700 dark:text-white">McPatch</div>
           </div>
           <form
             onSubmit={login}
-            className="space-y-5">
+            className="space-y-6">
             <div>
-              <label>
+              <label className="block mb-2 text-sm font-medium">
                 用户名
               </label>
               <input
@@ -72,26 +72,26 @@ const Index = () => {
                 name="username"
                 type="text"
                 required
-                className="w-full mt-2 px-3 py-2 bg-transparent outline-none border focus:border-indigo-600 shadow-sm rounded-lg"
+                className="neomorphic-input w-full"
               />
             </div>
             <div>
-              <label>
+              <label className="block mb-2 text-sm font-medium">
                 密码
               </label>
               <input
                 name="password"
                 type="password"
                 required
-                className="w-full mt-2 px-3 py-2 bg-transparent outline-none border focus:border-indigo-600 shadow-sm rounded-lg"
+                className="neomorphic-input w-full"
               />
             </div>
             <div className="flex items-center justify-between text-sm">
               <a href="#"
-                 className="text-center text-indigo-600 dark:text-indigo-500 hover:text-indigo-500 dark:hover:text-indigo-400">忘记密码?</a>
+                 className="text-center text-gray-600 dark:text-gray-300 hover:text-gray-800 dark:hover:text-white transition-all">忘记密码?</a>
             </div>
             <button
-              className="w-full px-4 py-2 text-white font-medium bg-indigo-600 hover:bg-indigo-500 active:bg-indigo-600 rounded-lg duration-150"
+              className="neomorphic-button w-full px-4 py-3 text-gray-700 font-medium"
               type="submit">
               登录
             </button>

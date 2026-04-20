@@ -33,14 +33,14 @@ const Index = () => {
 
   return (
     <>
-      <div className="flex flex-col min-h-screen p-10">
-        <div>
+      <div className="flex flex-col min-h-screen">
+        <div className="mb-6">
           <FileBreadcrumb path={path} handlerBreadcrumb={handlerBreadcrumb}/>
         </div>
-        <div className="mt-2 pt-4 pb-2">
+        <div className="neomorphic p-6 mb-6">
           <FolderButtonGroup path={path} getFileList={getFileList}/>
         </div>
-        <div className="flex-1 mt-2 h-full bg-gray-100 dark:bg-gray-800">
+        <div className="neomorphic flex-1 h-full p-6">
           <TileViewFileExplorer
             path={path}
             getFileList={getFileList}

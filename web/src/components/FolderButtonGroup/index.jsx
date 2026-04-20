@@ -79,17 +79,15 @@ const Index = ({path, getFileList}) => {
   return (
     <>
       {contextHolder}
-      <div className="flex justify-start items-center h-8">
-        <Button type="primary" size="large" onClick={() => setMakeDirectoryShow(true)}>创建文件夹</Button>
+      <div className="flex justify-start items-center space-x-4">
+        <div className="neomorphic-button px-6 py-3 text-gray-700 font-medium cursor-pointer transition-all" onClick={() => setMakeDirectoryShow(true)}>创建文件夹</div>
         <Upload
-          {...uploadFileProps}
-          className="ml-2">
-          <Button type="primary" size="large">上传文件</Button>
+          {...uploadFileProps}>
+          <div className="neomorphic-button px-6 py-3 text-gray-700 font-medium cursor-pointer transition-all">上传文件</div>
         </Upload>
         <Upload
-          {...uploadFileExplorerProps}
-          className="ml-2">
-          <Button type="primary" size="large">上传文件夹</Button>
+          {...uploadFileExplorerProps}>
+          <div className="neomorphic-button px-6 py-3 text-gray-700 font-medium cursor-pointer transition-all">上传文件夹</div>
         </Upload>
       </div>
 
@@ -101,8 +99,8 @@ const Index = ({path, getFileList}) => {
         onOk={() => makeDirectory()}
         onCancel={() => setMakeDirectoryShow(false)}>
         <div>
-          <Input
-            className="mt-2"
+          <input
+            className="neomorphic-input w-full mt-4"
             placeholder="请输入文件夹名称."
             value={directory}
             onChange={(e) => setDirectory(e.target.value)}/>
