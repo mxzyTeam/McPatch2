@@ -91,9 +91,9 @@ const Index = () => {
                     return (
                       <li key={idx}>
                         <div onClick={() => navigate(item.nav)}
-                             className={`flex items-center gap-x-2 p-3 rounded-xl cursor-pointer transition-all duration-150 ${
+                             className={`neu-nav-item flex items-center gap-x-2 p-3 rounded-xl cursor-pointer transition-all duration-150 ${
                                isActive
-                                 ? 'neu-inset-sm text-[#5a7d8f] dark:text-[#D4AF37] font-semibold'
+                                 ? 'neu-nav-active neu-inset-sm text-[#5a7d8f] dark:text-[#D4AF37] font-semibold'
                                  : 'text-[#636e72] dark:text-[#9E8E6E] hover:text-[#2d3436] dark:hover:text-[#E8D5A3]'
                              }`}
                              style={!isActive ? {boxShadow: '3px 3px 6px var(--neu-shadow-dark), -3px -3px 6px var(--neu-shadow-light)', background: 'transparent'} : undefined}>
@@ -113,9 +113,9 @@ const Index = () => {
                       return (
                         <li key={idx}>
                           <div onClick={() => navigate(item.nav)}
-                               className={`flex items-center gap-x-2 p-3 rounded-xl cursor-pointer transition-all duration-150 ${
+                               className={`neu-nav-item flex items-center gap-x-2 p-3 rounded-xl cursor-pointer transition-all duration-150 ${
                                  isActive
-                                   ? 'neu-inset-sm text-[#5a7d8f] dark:text-[#D4AF37] font-semibold'
+                                   ? 'neu-nav-active neu-inset-sm text-[#5a7d8f] dark:text-[#D4AF37] font-semibold'
                                    : 'text-[#636e72] dark:text-[#9E8E6E] hover:text-[#2d3436] dark:hover:text-[#E8D5A3]'
                                }`}
                                style={!isActive ? {boxShadow: '3px 3px 6px var(--neu-shadow-dark), -3px -3px 6px var(--neu-shadow-light)', background: 'transparent'} : undefined}>
@@ -137,7 +137,7 @@ const Index = () => {
                   </li>
                 </ul>
                 <div className="py-4 px-4">
-                  <div className="neu-raised-xs p-3 flex items-center gap-x-4">
+                  <div className="neu-raised-xs p-3 flex items-center gap-x-4 neu-glow-hover">
                     <CircleUserRound className="text-[#5a7d8f] dark:text-[#D4AF37]" size={36} strokeWidth={1.0}/>
                     <div>
                       <span className="block text-[#2d3436] dark:text-[#E8D5A3] text-sm font-semibold">

@@ -22,7 +22,7 @@ const Index = () => {
     <>
       <div className="w-screen h-screen flex flex-col justify-center items-center space-y-6 px-4">
         <h2
-          className="text-5xl md:text-6xl font-extrabold text-[#5a7d8f] dark:text-[#D4AF37] tracking-tight">
+          className="text-5xl md:text-6xl font-extrabold text-[#5a7d8f] dark:text-[#D4AF37] tracking-tight neu-float">
           McPatch
         </h2>
         <p className={`max-w-2xl mx-auto text-center text-[#636e72] dark:text-[#9E8E6E]`}>
@@ -30,7 +30,7 @@ const Index = () => {
         </p>
         <button
           onClick={() => checkStatus()}
-          className="neu-btn-primary px-8 py-3.5 text-base font-medium rounded-full">
+          className="neu-btn-primary neu-btn-click px-8 py-3.5 text-base font-medium rounded-full">
           即刻开始!
         </button>
       </div>

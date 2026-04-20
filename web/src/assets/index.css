@@ -17,6 +17,7 @@
   --neu-accent-light: #7fa8bc;
   --neu-text: #2d3436;
   --neu-text-muted: #636e72;
+  --neu-transition-speed: 0.3s;
 }
 
 .dark {
@@ -34,13 +35,17 @@ body {
   border: 0;
   padding: 0;
   background: linear-gradient(135deg, #e8ecf1 0%, #d1d9e6 50%, #e0e5ec 100%);
+  transition: background var(--neu-transition-speed) ease;
 }
 
 .dark body {
   background: linear-gradient(135deg, #0d0d0d 0%, #111111 50%, #0a0a0a 100%);
 }
 
-/* Neumorphic utility classes */
+/* ============================================
+   Neumorphic Utility Classes
+   ============================================ */
+
 .neu-raised {
   background: var(--neu-bg);
   border-radius: 16px;
@@ -89,24 +94,30 @@ body {
     inset -2px -2px 4px var(--neu-shadow-light);
 }
 
+/* ============================================
+   Button Styles with Enhanced Animations
+   ============================================ */
+
 .neu-btn {
   background: var(--neu-bg);
   border-radius: 12px;
   box-shadow:
     4px 4px 8px var(--neu-shadow-dark),
     -4px -4px 8px var(--neu-shadow-light);
-  transition: all 0.2s ease;
+  transition: all 0.25s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   border: none;
   cursor: pointer;
 }
 
 .neu-btn:hover {
+  transform: translateY(-1px);
   box-shadow:
     5px 5px 10px var(--neu-shadow-dark),
     -5px -5px 10px var(--neu-shadow-light);
 }
 
 .neu-btn:active {
+  transform: translateY(0);
   box-shadow:
     inset 2px 2px 5px var(--neu-shadow-dark),
     inset -2px -2px 5px var(--neu-shadow-light);
@@ -118,10 +129,12 @@ body {
   box-shadow:
     4px 4px 8px var(--neu-shadow-dark),
     -4px -4px 8px var(--neu-shadow-light);
-  transition: all 0.2s ease;
+  transition: all 0.25s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   border: none;
   cursor: pointer;
   color: #ffffff;
+  position: relative;
+  overflow: hidden;
 }
 
 .dark .neu-btn-primary {
@@ -129,17 +142,75 @@ body {
 }
 
 .neu-btn-primary:hover {
+  transform: translateY(-1px);
   box-shadow:
     5px 5px 10px var(--neu-shadow-dark),
-    -5px -5px 10px var(--neu-shadow-light);
+    -5px -5px 10px var(--neu-shadow-light),
+    0 4px 12px rgba(90,125,143,0.25);
   background: linear-gradient(135deg, var(--neu-accent-light), var(--neu-accent));
 }
 
+.dark .neu-btn-primary:hover {
+  box-shadow:
+    5px 5px 10px var(--neu-shadow-dark),
+    -5px -5px 10px var(--neu-shadow-light),
+    0 4px 15px rgba(212,175,55,0.3);
+}
+
 .neu-btn-primary:active {
+  transform: translateY(0) scale(0.98);
   box-shadow:
     inset 2px 2px 5px rgba(0,0,0,0.2),
     inset -2px -2px 5px rgba(255,255,255,0.1);
 }
+
+/* Button ripple effect */
+@keyframes neu-btn-ripple {
+  0% { transform: scale(0); opacity: 0.6; }
+  100% { transform: scale(4); opacity: 0; }
+}
+
+.neu-btn-click {
+  position: relative;
+  overflow: hidden;
+}
+
+.neu-btn-click::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.35);
+  transform: translate(-50%, -50%) scale(0);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.neu-btn-click:active::after {
+  animation: neu-btn-ripple 0.5s ease-out;
+}
+
+.dark .neu-btn-click::after {
+  background: rgba(212,175,55,0.25);
+}
+
+/* Button press bounce animation */
+@keyframes neu-btn-press {
+  0% { transform: scale(1); }
+  50% { transform: scale(0.95); }
+  100% { transform: scale(1); }
+}
+
+.neu-btn-press {
+  animation: neu-btn-press 0.25s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+/* ============================================
+   Input Styles with Focus Animation
+   ============================================ */
 
 .neu-input {
   background: var(--neu-bg);
@@ -148,18 +219,30 @@ body {
     inset 3px 3px 6px var(--neu-shadow-dark),
     inset -3px -3px 6px var(--neu-shadow-light);
   border: none;
-  transition: all 0.2s ease;
+  transition: all 0.25s ease;
+}
+
+@keyframes neu-input-glow {
+  0% { box-shadow: inset 4px 4px 8px var(--neu-shadow-dark), inset -4px -4px 8px var(--neu-shadow-light), 0 0 0 2px var(--neu-accent); }
+  50% { box-shadow: inset 4px 4px 8px var(--neu-shadow-dark), inset -4px -4px 8px var(--neu-shadow-light), 0 0 0 3px var(--neu-accent), 0 0 10px rgba(90,125,143,0.15); }
+  100% { box-shadow: inset 4px 4px 8px var(--neu-shadow-dark), inset -4px -4px 8px var(--neu-shadow-light), 0 0 0 2px var(--neu-accent); }
 }
 
 .neu-input:focus {
-  box-shadow:
-    inset 4px 4px 8px var(--neu-shadow-dark),
-    inset -4px -4px 8px var(--neu-shadow-light),
-    0 0 0 2px var(--neu-accent);
+  animation: neu-input-glow 1.5s ease-in-out infinite;
   outline: none;
 }
 
-/* Neumorphic progress bar */
+.dark .neu-input:focus {
+  animation: none;
+  box-shadow: inset 4px 4px 8px var(--neu-shadow-dark), inset -4px -4px 8px var(--neu-shadow-light), 0 0 0 2px var(--neu-accent), 0 0 12px rgba(212,175,55,0.2);
+  outline: none;
+}
+
+/* ============================================
+   Neumorphic Progress Bar with Shimmer
+   ============================================ */
+
 .neu-progress-track {
   background: var(--neu-bg);
   border-radius: 12px;
@@ -169,8 +252,22 @@ body {
   overflow: hidden;
 }
 
+@keyframes neu-shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
 .neu-progress-fill {
-  background: linear-gradient(135deg, var(--neu-accent), var(--neu-accent-light));
+  background: linear-gradient(
+    135deg,
+    var(--neu-accent) 0%,
+    var(--neu-accent-light) 25%,
+    var(--neu-accent) 50%,
+    var(--neu-accent-light) 75%,
+    var(--neu-accent) 100%
+  );
+  background-size: 200% 100%;
+  animation: neu-shimmer 2.5s ease-in-out infinite;
   border-radius: 12px;
   transition: width 0.5s ease;
   box-shadow:
@@ -184,7 +281,10 @@ body {
     0 0 8px rgba(212,175,55,0.3);
 }
 
-/* Terminal styling */
+/* ============================================
+   Terminal Styling
+   ============================================ */
+
 .neu-terminal {
   background: #1a1e23;
   border-radius: 16px;
@@ -200,7 +300,10 @@ body {
     inset -2px -2px 6px rgba(30,30,30,0.3);
 }
 
-/* Custom scrollbar for neumorphic design */
+/* ============================================
+   Custom Scrollbar
+   ============================================ */
+
 ::-webkit-scrollbar {
   width: 8px;
   height: 8px;
@@ -223,7 +326,10 @@ body {
   background: var(--neu-accent);
 }
 
-/* Floating animation */
+/* ============================================
+   Floating & Pulse Animations (Original)
+   ============================================ */
+
 @keyframes neu-float {
   0%, 100% { transform: translateY(0); }
   50% { transform: translateY(-6px); }
@@ -233,7 +339,6 @@ body {
   animation: neu-float 4s ease-in-out infinite;
 }
 
-/* Pulse glow for active elements */
 @keyframes neu-pulse {
   0%, 100% { box-shadow: 4px 4px 8px var(--neu-shadow-dark), -4px -4px 8px var(--neu-shadow-light), 0 0 0 rgba(90,125,143,0); }
   50% { box-shadow: 4px 4px 8px var(--neu-shadow-dark), -4px -4px 8px var(--neu-shadow-light), 0 0 15px rgba(90,125,143,0.3); }
@@ -243,16 +348,274 @@ body {
   animation: neu-pulse 2s ease-in-out infinite;
 }
 
-/* Override antd primary color to neumorphic accent */
+/* ============================================
+   Page Transition Animations
+   ============================================ */
+
+@keyframes neu-page-enter {
+  0% {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.neu-page-enter {
+  animation: neu-page-enter 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+}
+
+/* ============================================
+   Card Entrance Animations
+   ============================================ */
+
+@keyframes neu-card-enter {
+  0% {
+    opacity: 0;
+    transform: translateY(20px) scale(0.97);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes neu-card-enter-left {
+  0% {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.neu-card-enter {
+  animation: neu-card-enter 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+}
+
+.neu-card-enter-left {
+  animation: neu-card-enter-left 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+}
+
+/* Staggered entrance delays */
+.neu-stagger-1 { animation-delay: 0.05s; opacity: 0; }
+.neu-stagger-2 { animation-delay: 0.1s; opacity: 0; }
+.neu-stagger-3 { animation-delay: 0.15s; opacity: 0; }
+.neu-stagger-4 { animation-delay: 0.2s; opacity: 0; }
+.neu-stagger-5 { animation-delay: 0.25s; opacity: 0; }
+
+/* ============================================
+   Sidebar Navigation Animations
+   ============================================ */
+
+.neu-nav-item {
+  position: relative;
+  transition: all 0.25s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.neu-nav-item::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%) scaleY(0);
+  width: 3px;
+  height: 60%;
+  border-radius: 0 4px 4px 0;
+  background: var(--neu-accent);
+  transition: transform 0.25s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.neu-nav-active::before {
+  transform: translateY(-50%) scaleY(1);
+}
+
+/* ============================================
+   Dark Mode Theme Transition
+   ============================================ */
+
+.neu-theme-transition,
+.neu-theme-transition *,
+.neu-theme-transition *::before,
+.neu-theme-transition *::after {
+  transition: background-color 0.4s ease,
+              color 0.3s ease,
+              box-shadow 0.3s ease,
+              border-color 0.3s ease !important;
+}
+
+/* ============================================
+   FloatButton Rotation Animation
+   ============================================ */
+
+@keyframes neu-rotate-in {
+  0% { transform: rotate(-180deg) scale(0); opacity: 0; }
+  100% { transform: rotate(0deg) scale(1); opacity: 1; }
+}
+
+.neu-rotate-in {
+  animation: neu-rotate-in 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+/* ============================================
+   Modal Animation
+   ============================================ */
+
+@keyframes neu-modal-enter {
+  0% {
+    opacity: 0;
+    transform: scale(0.9) translateY(10px);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+.ant-modal-content {
+  animation: neu-modal-enter 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+/* ============================================
+   Message Notification Animation
+   ============================================ */
+
+@keyframes neu-msg-enter {
+  0% {
+    opacity: 0;
+    transform: translateY(-16px) scale(0.95);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.ant-message-notice {
+  animation: neu-msg-enter 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+/* ============================================
+   Hover Glow Effect
+   ============================================ */
+
+.neu-glow-hover {
+  transition: box-shadow 0.3s ease, transform 0.2s ease;
+}
+
+.neu-glow-hover:hover {
+  box-shadow:
+    6px 6px 12px var(--neu-shadow-dark),
+    -6px -6px 12px var(--neu-shadow-light),
+    0 0 20px rgba(90,125,143,0.15);
+  transform: translateY(-2px);
+}
+
+.dark .neu-glow-hover:hover {
+  box-shadow:
+    6px 6px 12px var(--neu-shadow-dark),
+    -6px -6px 12px var(--neu-shadow-light),
+    0 0 20px rgba(212,175,55,0.15);
+}
+
+/* ============================================
+   File Item Hover Pop Animation
+   ============================================ */
+
+@keyframes neu-item-pop {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.06); }
+  100% { transform: scale(1.03); }
+}
+
+.neu-item-hover {
+  transition: all 0.2s ease;
+}
+
+.neu-item-hover:hover {
+  animation: neu-item-pop 0.3s ease forwards;
+}
+
+/* ============================================
+   Skeleton/Pulse Loading
+   ============================================ */
+
+@keyframes neu-skeleton-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+
+.neu-skeleton {
+  animation: neu-skeleton-pulse 1.5s ease-in-out infinite;
+  background: linear-gradient(
+    90deg,
+    var(--neu-bg) 0%,
+    var(--neu-shadow-light) 50%,
+    var(--neu-bg) 100%
+  );
+  background-size: 200% 100%;
+  border-radius: 8px;
+}
+
+/* ============================================
+   antd Component Overrides
+   ============================================ */
+
+/* Primary button */
 .ant-btn-primary {
   background: linear-gradient(135deg, var(--neu-accent), var(--neu-accent-light)) !important;
   border-color: var(--neu-accent) !important;
   box-shadow: 4px 4px 8px var(--neu-shadow-dark), -4px -4px 8px var(--neu-shadow-light) !important;
+  transition: all 0.25s cubic-bezier(0.25, 0.46, 0.45, 0.94) !important;
+  position: relative;
+  overflow: hidden;
 }
 
 .ant-btn-primary:hover {
   background: linear-gradient(135deg, var(--neu-accent-light), var(--neu-accent)) !important;
   border-color: var(--neu-accent-light) !important;
+  transform: translateY(-1px);
+  box-shadow: 5px 5px 10px var(--neu-shadow-dark), -5px -5px 10px var(--neu-shadow-light), 0 4px 12px rgba(90,125,143,0.2) !important;
+}
+
+.dark .ant-btn-primary:hover {
+  box-shadow: 5px 5px 10px var(--neu-shadow-dark), -5px -5px 10px var(--neu-shadow-light), 0 4px 15px rgba(212,175,55,0.3) !important;
+}
+
+.ant-btn-primary:active {
+  transform: translateY(0) scale(0.97) !important;
+}
+
+/* antd button ripple */
+@keyframes neu-ant-ripple {
+  0% { transform: scale(0); opacity: 0.5; }
+  100% { transform: scale(4); opacity: 0; }
+}
+
+.ant-btn-primary::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.3);
+  transform: translate(-50%, -50%) scale(0);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.ant-btn-primary:active::after {
+  animation: neu-ant-ripple 0.5s ease-out;
+}
+
+.dark .ant-btn-primary::after {
+  background: rgba(212,175,55,0.2);
 }
 
 /* Dark mode antd overrides - black-gold theme */
@@ -316,25 +679,38 @@ body {
   box-shadow: 4px 4px 8px #050505, -4px -4px 8px #1a1a1a !important;
 }
 
+/* Card with entrance animation */
 .ant-card {
   background: var(--neu-bg) !important;
   border: none !important;
   border-radius: 16px !important;
   box-shadow: 6px 6px 12px var(--neu-shadow-dark), -6px -6px 12px var(--neu-shadow-light) !important;
+  transition: box-shadow 0.3s ease, transform 0.2s ease !important;
 }
 
+.ant-card:hover {
+  box-shadow: 6px 6px 12px var(--neu-shadow-dark), -6px -6px 12px var(--neu-shadow-light), 0 0 15px rgba(90,125,143,0.1) !important;
+}
+
+.dark .ant-card:hover {
+  box-shadow: 6px 6px 12px var(--neu-shadow-dark), -6px -6px 12px var(--neu-shadow-light), 0 0 15px rgba(212,175,55,0.1) !important;
+}
+
+/* Modal */
 .ant-modal-content {
   background: var(--neu-bg) !important;
   border-radius: 16px !important;
   box-shadow: 8px 8px 16px var(--neu-shadow-dark), -8px -8px 16px var(--neu-shadow-light) !important;
 }
 
+/* Input */
 .ant-input,
 .ant-input-affix-wrapper {
   background: var(--neu-bg) !important;
   border: none !important;
   border-radius: 12px !important;
   box-shadow: inset 3px 3px 6px var(--neu-shadow-dark), inset -3px -3px 6px var(--neu-shadow-light) !important;
+  transition: all 0.25s ease !important;
 }
 
 .ant-input:focus,
@@ -359,6 +735,12 @@ body {
   background: var(--neu-bg) !important;
   border-radius: 50% !important;
   box-shadow: 4px 4px 8px var(--neu-shadow-dark), -4px -4px 8px var(--neu-shadow-light) !important;
+  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) !important;
+}
+
+.ant-float-btn:hover {
+  transform: scale(1.1) !important;
+  box-shadow: 6px 6px 12px var(--neu-shadow-dark), -6px -6px 12px var(--neu-shadow-light) !important;
 }
 
 /* Dark mode input text color */
