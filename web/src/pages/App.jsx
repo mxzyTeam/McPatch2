@@ -25,8 +25,10 @@ const App = () => {
     setDarkMode(prev => !prev);
     setTimeout(() => {
       setThemeTransition(false);
+    }, 800);
+    setTimeout(() => {
       setIconSpin(false);
-    }, 500);
+    }, 600);
   }, []);
 
   return (
@@ -36,9 +38,7 @@ const App = () => {
         <div
           className={`dark:bg-[#0d0d0d] min-h-screen ${themeTransition ? 'neu-theme-transition' : ''}`}
           style={{background: darkMode ? 'linear-gradient(135deg, #0d0d0d 0%, #111111 50%, #0a0a0a 100%)' : 'linear-gradient(135deg, #e8ecf1 0%, #d1d9e6 50%, #e0e5ec 100%)'}}>
-          <div key={location.pathname} className="neu-page-enter">
-            <Outlet/>
-          </div>
+          <Outlet/>
           <FloatButton
             icon={iconSpin
               ? <div className="neu-rotate-in w-full h-full flex items-center justify-center">{darkMode ? <Sun className="w-full h-full"/> : <MoonStar className="w-full h-full"/>}</div>

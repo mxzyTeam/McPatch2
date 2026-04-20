@@ -152,7 +152,9 @@ const Index = () => {
         </div>
 
         <div className="ml-60 flex-grow">
-          <Outlet/>
+          <div key={location.pathname} className="neu-page-enter">
+            <Outlet/>
+          </div>
         </div>
       </div>
     </>

@@ -55,7 +55,7 @@ const Index = () => {
     <>
       {contextHolder}
       <div className="w-full h-screen flex flex-col items-center justify-center px-4">
-        <div className="max-w-sm w-full text-[#636e72] dark:text-[#9E8E6E] space-y-5 neu-card-enter">
+        <div className="max-w-sm w-full text-[#636e72] dark:text-[#9E8E6E] space-y-5 neu-card-enter-scale">
           <div className="text-center pb-8">
             <div className="text-4xl font-bold text-[#5a7d8f] dark:text-[#D4AF37]">McPatch</div>
           </div>
@@ -93,7 +93,7 @@ const Index = () => {
                  className="text-center text-[#5a7d8f] dark:text-[#D4AF37] hover:text-[#7fa8bc] dark:hover:text-[#D4AF37] transition-colors duration-200">忘记密码?</a>
             </div>
             <button
-              className="neu-btn-primary neu-btn-click w-full px-4 py-3 font-medium"
+              className="neu-btn-primary w-full px-4 py-3 font-medium"
               type="submit">
               登录
             </button>

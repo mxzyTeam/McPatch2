@@ -30,7 +30,7 @@ const Index = () => {
         </p>
         <button
           onClick={() => checkStatus()}
-          className="neu-btn-primary neu-btn-click px-8 py-3.5 text-base font-medium rounded-full">
+          className="neu-btn-primary px-8 py-3.5 text-base font-medium rounded-full">
           即刻开始!
         </button>
       </div>
