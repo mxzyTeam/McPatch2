@@ -1,7 +1,7 @@
 import {useNavigate} from "react-router-dom";
 import {useSelector} from "react-redux";
 import {theme} from "antd";
-import {useBounceClick, useRipple} from "@/utils/animations.js";
+import {useEffect, useState, useRef} from "react";
 
 const {useToken} = theme;
 
@@ -10,12 +10,33 @@ const Index = () => {
   const user = useSelector(state => state.user)
   const navigate = useNavigate();
   const {token} = useToken();
-  const { bounceClass, handleBounceClick, handleAnimationEnd } = useBounceClick();
-  const { ripples, addRipple } = useRipple();
+
+  // 浮动动画 - 用内联 style + setInterval 驱动
+  const [floatUp, setFloatUp] = useState(false);
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setFloatUp(prev => !prev);
+    }, 1500);
+    return () => clearInterval(timer);
+  }, []);
+
+  // 按钮弹跳动画 - 用内联 style + setTimeout 链驱动
+  const [btnScale, setBtnScale] = useState(1);
+  const clickingRef = useRef(false);
 
   const handleClick = (e) => {
-    addRipple(e);
-    handleBounceClick(e);
+    if (clickingRef.current) return;
+    clickingRef.current = true;
+
+    // 弹跳序列: 1 → 0.88 → 1.08 → 0.97 → 1
+    setBtnScale(0.88);
+    setTimeout(() => setBtnScale(1.08), 120);
+    setTimeout(() => setBtnScale(0.97), 240);
+    setTimeout(() => {
+      setBtnScale(1);
+      clickingRef.current = false;
+    }, 360);
+
     checkStatus();
   };
 
@@ -31,7 +52,11 @@ const Index = () => {
     <>
       <div className="w-screen h-screen flex flex-col justify-center items-center space-y-6 px-4">
         <h2
-          className="text-5xl md:text-6xl font-extrabold text-[#5a7d8f] dark:text-[#D4AF37] tracking-tight neu-float">
+          className="text-5xl md:text-6xl font-extrabold text-[#5a7d8f] dark:text-[#D4AF37] tracking-tight"
+          style={{
+            transform: floatUp ? 'translateY(-10px)' : 'translateY(0)',
+            transition: 'transform 1.5s ease-in-out',
+          }}>
           McPatch
         </h2>
         <p className={`max-w-2xl mx-auto text-center text-[#636e72] dark:text-[#9E8E6E]`}>
@@ -39,21 +64,12 @@ const Index = () => {
         </p>
         <button
           onClick={handleClick}
-          onAnimationEnd={handleAnimationEnd}
-          className={`neu-btn-primary neu-ripple-container px-8 py-3.5 text-base font-medium rounded-full ${bounceClass}`}>
+          className="neu-btn-primary px-8 py-3.5 text-base font-medium rounded-full"
+          style={{
+            transform: `scale(${btnScale})`,
+            transition: 'transform 0.12s ease-out',
+          }}>
           即刻开始!
-          {ripples.map(r => (
-            <span
-              key={r.id}
-              className="neu-ripple"
-              style={{
-                left: r.x - r.size / 2,
-                top: r.y - r.size / 2,
-                width: r.size,
-                height: r.size,
-              }}
-            />
-          ))}
         </button>
       </div>
     </>

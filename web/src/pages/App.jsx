@@ -1,4 +1,4 @@
-import React, {useEffect, useState, useCallback} from 'react';
+import React, {useEffect, useState, useCallback, useRef} from 'react';
 import {Outlet, useLocation} from "react-router-dom";
 import {ConfigProvider, FloatButton, theme} from "antd";
 import {MoonStar, Sun} from "lucide-react";
@@ -7,8 +7,10 @@ const App = () => {
 
   const [darkMode, setDarkMode] = useState(localStorage.getItem("darkMode") === "true");
   const [themeTransition, setThemeTransition] = useState(false);
-  const [iconSpin, setIconSpin] = useState(false);
+  const [iconRotation, setIconRotation] = useState(0);
+  const [iconScale, setIconScale] = useState(1);
   const location = useLocation();
+  const rotatingRef = useRef(false);
 
   useEffect(() => {
     if (darkMode) {
@@ -21,14 +23,24 @@ const App = () => {
 
   const toggleDarkMode = useCallback(() => {
     setThemeTransition(true);
-    setIconSpin(true);
     setDarkMode(prev => !prev);
+
+    // 切换按钮旋转动画 - 用内联 style 驱动
+    if (!rotatingRef.current) {
+      rotatingRef.current = true;
+      setIconScale(0.5);
+      setTimeout(() => {
+        setIconRotation(prev => prev + 360);
+        setIconScale(1);
+      }, 150);
+      setTimeout(() => {
+        rotatingRef.current = false;
+      }, 600);
+    }
+
     setTimeout(() => {
       setThemeTransition(false);
     }, 800);
-    setTimeout(() => {
-      setIconSpin(false);
-    }, 600);
   }, []);
 
   return (
@@ -40,9 +52,19 @@ const App = () => {
           style={{background: darkMode ? 'linear-gradient(135deg, #0d0d0d 0%, #111111 50%, #0a0a0a 100%)' : 'linear-gradient(135deg, #e8ecf1 0%, #d1d9e6 50%, #e0e5ec 100%)'}}>
           <Outlet/>
           <FloatButton
-            icon={iconSpin
-              ? <div className="neu-rotate-in w-full h-full flex items-center justify-center">{darkMode ? <Sun className="w-full h-full"/> : <MoonStar className="w-full h-full"/>}</div>
-              : (darkMode ? <Sun className="w-full h-full"/> : <MoonStar className="w-full h-full"/>)}
+            icon={
+              <div style={{
+                width: '100%',
+                height: '100%',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                transform: `rotate(${iconRotation}deg) scale(${iconScale})`,
+                transition: 'transform 0.5s cubic-bezier(0.22, 1, 0.36, 1)',
+              }}>
+                {darkMode ? <Sun style={{width: '100%', height: '100%'}}/> : <MoonStar style={{width: '100%', height: '100%'}}/>}
+              </div>
+            }
             tooltip={<div>深色模式</div>}
             onClick={toggleDarkMode}/>
         </div>

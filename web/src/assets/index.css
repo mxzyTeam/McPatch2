@@ -2,26 +2,37 @@
 @tailwind components;
 @tailwind utilities;
 
-/* ============================================
-   Neumorphic Design System
-   Light mode: teal/slate accent, white gradient bg
-   Dark mode: black-gold (黑金) accent, black bg
-   No purple gradients
-   ============================================ */
+/* ================================================================
+   拟态毛玻璃设计系统 (Neumorphic Glassmorphism)
+   - 毛玻璃背景 + 拟态阴影
+   - 大圆角 12-20px
+   - 左上角光源
+   - 无紫色，主色：蓝绿色系
+   - 暗黑模式：黑金色系
+   ================================================================ */
 
 :root {
   --neu-bg: #e0e5ec;
+  --neu-bg-glass: rgba(224, 229, 236, 0.65);
   --neu-shadow-dark: #a3b1c6;
   --neu-shadow-light: #ffffff;
   --neu-accent: #5a7d8f;
   --neu-accent-light: #7fa8bc;
   --neu-text: #2d3436;
   --neu-text-muted: #636e72;
+  --neu-blur: 12px;
+  --neu-blur-heavy: 18px;
+  --neu-radius: 16px;
+  --neu-radius-sm: 12px;
+  --neu-radius-xs: 8px;
   --neu-transition-speed: 0.5s;
+  --ease-smooth: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  --ease-bounce: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .dark {
   --neu-bg: #0d0d0d;
+  --neu-bg-glass: rgba(13, 13, 13, 0.55);
   --neu-shadow-dark: #050505;
   --neu-shadow-light: #1a1a1a;
   --neu-accent: #D4AF37;
@@ -40,7 +51,7 @@ html, body {
   padding: 0;
 }
 
-/* Background layer for smooth theme transition */
+/* 毛玻璃背景底层 */
 body::before {
   content: '';
   position: fixed;
@@ -50,90 +61,100 @@ body::before {
   height: 100%;
   background: linear-gradient(135deg, #e8ecf1 0%, #d1d9e6 50%, #e0e5ec 100%);
   z-index: -2;
-  transition: opacity 0.6s ease;
+  transition: opacity 0.6s var(--ease-smooth);
 }
 
 .dark body::before {
   background: linear-gradient(135deg, #0d0d0d 0%, #111111 50%, #0a0a0a 100%);
 }
 
-/* ============================================
-   Global Theme Transition
-   ============================================ */
-
+/* ================================================================
+   全局主题切换过渡
+   ================================================================ */
 .neu-theme-transition,
 .neu-theme-transition *,
 .neu-theme-transition *::before,
 .neu-theme-transition *::after {
-  transition: background-color 0.6s ease,
-              color 0.5s ease,
-              box-shadow 0.5s ease,
-              border-color 0.5s ease !important;
+  transition: background-color 0.6s var(--ease-smooth),
+              color 0.5s var(--ease-smooth),
+              box-shadow 0.5s var(--ease-smooth),
+              border-color 0.5s var(--ease-smooth) !important;
 }
 
-/* ============================================
-   Neumorphic Utility Classes
-   ============================================ */
+/* ================================================================
+   毛玻璃拟态组件基础
+   ================================================================ */
 
 .neu-raised {
-  background: var(--neu-bg);
-  border-radius: 16px;
+  background: var(--neu-bg-glass) !important;
+  backdrop-filter: blur(var(--neu-blur)) !important;
+  -webkit-backdrop-filter: blur(var(--neu-blur)) !important;
+  border-radius: var(--neu-radius) !important;
   box-shadow:
     6px 6px 12px var(--neu-shadow-dark),
-    -6px -6px 12px var(--neu-shadow-light);
-  transition: box-shadow 0.3s ease, transform 0.3s ease;
+    -6px -6px 12px var(--neu-shadow-light) !important;
+  transition: box-shadow 0.3s var(--ease-smooth), transform 0.3s var(--ease-smooth) !important;
 }
 
 .neu-raised-sm {
-  background: var(--neu-bg);
-  border-radius: 12px;
+  background: var(--neu-bg-glass) !important;
+  backdrop-filter: blur(var(--neu-blur)) !important;
+  -webkit-backdrop-filter: blur(var(--neu-blur)) !important;
+  border-radius: var(--neu-radius-sm) !important;
   box-shadow:
     4px 4px 8px var(--neu-shadow-dark),
-    -4px -4px 8px var(--neu-shadow-light);
-  transition: box-shadow 0.3s ease, transform 0.3s ease;
+    -4px -4px 8px var(--neu-shadow-light) !important;
+  transition: box-shadow 0.3s var(--ease-smooth), transform 0.3s var(--ease-smooth) !important;
 }
 
 .neu-raised-xs {
-  background: var(--neu-bg);
-  border-radius: 8px;
+  background: var(--neu-bg-glass) !important;
+  backdrop-filter: blur(var(--neu-blur)) !important;
+  -webkit-backdrop-filter: blur(var(--neu-blur)) !important;
+  border-radius: var(--neu-radius-xs) !important;
   box-shadow:
     2px 2px 5px var(--neu-shadow-dark),
-    -2px -2px 5px var(--neu-shadow-light);
-  transition: box-shadow 0.3s ease, transform 0.3s ease;
+    -2px -2px 5px var(--neu-shadow-light) !important;
+  transition: box-shadow 0.3s var(--ease-smooth), transform 0.3s var(--ease-smooth) !important;
 }
 
 .neu-inset {
-  background: var(--neu-bg);
-  border-radius: 16px;
+  background: var(--neu-bg-glass) !important;
+  backdrop-filter: blur(var(--neu-blur)) !important;
+  -webkit-backdrop-filter: blur(var(--neu-blur)) !important;
+  border-radius: var(--neu-radius) !important;
   box-shadow:
     inset 4px 4px 8px var(--neu-shadow-dark),
-    inset -4px -4px 8px var(--neu-shadow-light);
-  transition: box-shadow 0.3s ease;
+    inset -4px -4px 8px var(--neu-shadow-light) !important;
+  transition: box-shadow 0.3s var(--ease-smooth) !important;
 }
 
 .neu-inset-sm {
-  background: var(--neu-bg);
-  border-radius: 12px;
+  background: var(--neu-bg-glass) !important;
+  backdrop-filter: blur(var(--neu-blur)) !important;
+  -webkit-backdrop-filter: blur(var(--neu-blur)) !important;
+  border-radius: var(--neu-radius-sm) !important;
   box-shadow:
     inset 3px 3px 6px var(--neu-shadow-dark),
-    inset -3px -3px 6px var(--neu-shadow-light);
-  transition: box-shadow 0.3s ease;
+    inset -3px -3px 6px var(--neu-shadow-light) !important;
+  transition: box-shadow 0.3s var(--ease-smooth) !important;
 }
 
 .neu-inset-xs {
-  background: var(--neu-bg);
-  border-radius: 8px;
+  background: var(--neu-bg-glass) !important;
+  backdrop-filter: blur(var(--neu-blur)) !important;
+  -webkit-backdrop-filter: blur(var(--neu-blur)) !important;
+  border-radius: var(--neu-radius-xs) !important;
   box-shadow:
     inset 2px 2px 4px var(--neu-shadow-dark),
-    inset -2px -2px 4px var(--neu-shadow-light);
-  transition: box-shadow 0.3s ease;
+    inset -2px -2px 4px var(--neu-shadow-light) !important;
+  transition: box-shadow 0.3s var(--ease-smooth) !important;
 }
 
-/* ============================================
-   KEYFRAME ANIMATIONS
-   ============================================ */
+/* ================================================================
+   入场动画 (Keyframes)
+   ================================================================ */
 
-/* Page slide-in from bottom */
 @keyframes neuPageEnter {
   0% {
     opacity: 0;
@@ -145,7 +166,6 @@ body::before {
   }
 }
 
-/* Card entrance with scale + fade */
 @keyframes neuCardEnter {
   0% {
     opacity: 0;
@@ -157,7 +177,6 @@ body::before {
   }
 }
 
-/* Card entrance from left */
 @keyframes neuCardEnterLeft {
   0% {
     opacity: 0;
@@ -169,7 +188,6 @@ body::before {
   }
 }
 
-/* Card entrance with scale only */
 @keyframes neuCardEnterScale {
   0% {
     opacity: 0;
@@ -181,40 +199,16 @@ body::before {
   }
 }
 
-/* Button bounce click - JS triggered */
-@keyframes neuBounceClick {
-  0% { transform: scale(1); }
-  25% { transform: scale(0.9); }
-  50% { transform: scale(1.06); }
-  75% { transform: scale(0.98); }
-  100% { transform: scale(1); }
-}
-
-/* Ripple effect for clicks */
-@keyframes neuRipple {
-  0% {
-    transform: scale(0);
-    opacity: 0.6;
-  }
-  100% {
-    transform: scale(4);
-    opacity: 0;
-  }
-}
-
-/* Float animation for decorative elements */
-@keyframes neuFloat {
-  0%, 100% { transform: translateY(0px); }
-  50% { transform: translateY(-12px); }
-}
-
-/* Progress bar shimmer */
 @keyframes neuShimmer {
   0% { background-position: 200% 0; }
   100% { background-position: -200% 0; }
 }
 
-/* Input focus glow pulse */
+@keyframes neuFloat {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-12px); }
+}
+
 @keyframes neuInputGlow {
   0%, 100% {
     box-shadow: inset 3px 3px 6px var(--neu-shadow-dark), inset -3px -3px 6px var(--neu-shadow-light), 0 0 0 2px var(--neu-accent);
@@ -224,13 +218,11 @@ body::before {
   }
 }
 
-/* Rotate in animation */
-@keyframes neuRotateIn {
-  0% { transform: rotate(-180deg) scale(0.5); opacity: 0; }
-  100% { transform: rotate(0deg) scale(1); opacity: 1; }
+@keyframes neuNavSlide {
+  0% { transform: translateY(-50%) scaleY(0); }
+  100% { transform: translateY(-50%) scaleY(1); }
 }
 
-/* Modal entrance */
 @keyframes neuModalEnter {
   0% {
     opacity: 0;
@@ -242,7 +234,6 @@ body::before {
   }
 }
 
-/* Message entrance */
 @keyframes neuMsgEnter {
   0% {
     opacity: 0;
@@ -254,215 +245,211 @@ body::before {
   }
 }
 
-/* Pulse glow for active elements */
-@keyframes neuPulse {
-  0%, 100% {
-    box-shadow: 4px 4px 8px var(--neu-shadow-dark), -4px -4px 8px var(--neu-shadow-light), 0 0 0 transparent;
+@keyframes neuRipple {
+  0% {
+    transform: scale(0);
+    opacity: 0.6;
   }
-  50% {
-    box-shadow: 4px 4px 8px var(--neu-shadow-dark), -4px -4px 8px var(--neu-shadow-light), 0 0 24px rgba(90,125,143,0.4);
-  }
-}
-
-@keyframes neuPulseDark {
-  0%, 100% {
-    box-shadow: 4px 4px 8px var(--neu-shadow-dark), -4px -4px 8px var(--neu-shadow-light), 0 0 0 transparent;
-  }
-  50% {
-    box-shadow: 4px 4px 8px var(--neu-shadow-dark), -4px -4px 8px var(--neu-shadow-light), 0 0 24px rgba(212,175,55,0.4);
+  100% {
+    transform: scale(4);
+    opacity: 0;
   }
 }
 
-/* Skeleton pulse */
 @keyframes neuSkeletonPulse {
   0%, 100% { opacity: 1; }
   50% { opacity: 0.4; }
 }
 
-/* Nav indicator slide */
-@keyframes neuNavSlide {
-  0% { transform: translateY(-50%) scaleY(0); }
-  100% { transform: translateY(-50%) scaleY(1); }
+@keyframes neuBounceClick {
+  0% { transform: scale(1); }
+  25% { transform: scale(0.92); }
+  50% { transform: scale(1.06); }
+  75% { transform: scale(0.98); }
+  100% { transform: scale(1); }
 }
 
-/* ============================================
-   ANIMATION UTILITY CLASSES
-   (JS will toggle these, NOT :active pseudo-class)
-   ============================================ */
+@keyframes neuRotateIn {
+  0% { transform: rotate(-180deg) scale(0.5); opacity: 0; }
+  100% { transform: rotate(0deg) scale(1); opacity: 1; }
+}
 
-/* Page enter - applied via key={} remount */
+/* ================================================================
+   入场动画类
+   ================================================================ */
+
 .neu-page-enter {
-  animation: neuPageEnter 0.6s cubic-bezier(0.22, 1, 0.36, 1) both !important;
+  animation: neuPageEnter 0.6s var(--ease-bounce) both !important;
 }
 
-/* Card entrance animations */
 .neu-card-enter {
-  animation: neuCardEnter 0.7s cubic-bezier(0.22, 1, 0.36, 1) both !important;
+  animation: neuCardEnter 0.7s var(--ease-bounce) both !important;
 }
 
 .neu-card-enter-left {
-  animation: neuCardEnterLeft 0.6s cubic-bezier(0.22, 1, 0.36, 1) both !important;
+  animation: neuCardEnterLeft 0.6s var(--ease-bounce) both !important;
 }
 
 .neu-card-enter-scale {
-  animation: neuCardEnterScale 0.6s cubic-bezier(0.22, 1, 0.36, 1) both !important;
+  animation: neuCardEnterScale 0.6s var(--ease-bounce) both !important;
 }
 
-/* Staggered entrance delays */
 .neu-stagger-1 { animation-delay: 0.1s !important; }
 .neu-stagger-2 { animation-delay: 0.2s !important; }
 .neu-stagger-3 { animation-delay: 0.3s !important; }
 .neu-stagger-4 { animation-delay: 0.4s !important; }
 .neu-stagger-5 { animation-delay: 0.5s !important; }
 
-/* Button bounce - toggled by JS onClick, removed on onAnimationEnd */
-.neu-btn-bounce {
-  animation: neuBounceClick 0.5s cubic-bezier(0.22, 1, 0.36, 1) !important;
-}
-
-/* Float - infinite loop */
 .neu-float {
   animation: neuFloat 3s ease-in-out infinite !important;
 }
 
-/* Rotate in */
+.neu-btn-bounce {
+  animation: neuBounceClick 0.5s var(--ease-bounce) !important;
+}
+
 .neu-rotate-in {
-  animation: neuRotateIn 0.5s cubic-bezier(0.22, 1, 0.36, 1) !important;
+  animation: neuRotateIn 0.5s var(--ease-bounce) !important;
 }
 
-/* Pulse glow */
-.neu-pulse-active {
-  animation: neuPulse 2s ease-in-out infinite !important;
-}
-
-.dark .neu-pulse-active {
-  animation: neuPulseDark 2s ease-in-out infinite !important;
-}
-
-/* ============================================
-   BUTTON STYLES
-   ============================================ */
+/* ================================================================
+   按钮三态动效 (默认/悬停/点击)
+   ================================================================ */
 
 .neu-btn {
-  background: var(--neu-bg);
-  border-radius: 12px;
+  background: var(--neu-bg-glass) !important;
+  backdrop-filter: blur(var(--neu-blur)) !important;
+  -webkit-backdrop-filter: blur(var(--neu-blur)) !important;
+  border-radius: var(--neu-radius-sm) !important;
   box-shadow:
     4px 4px 8px var(--neu-shadow-dark),
-    -4px -4px 8px var(--neu-shadow-light);
-  transition: all 0.25s cubic-bezier(0.22, 1, 0.36, 1);
-  border: none;
-  cursor: pointer;
+    -4px -4px 8px var(--neu-shadow-light) !important;
+  transition: all 0.3s var(--ease-smooth) !important;
+  border: none !important;
+  cursor: pointer !important;
 }
 
+/* 悬停态: 轻微放大 + 阴影加深 */
 .neu-btn:hover {
-  transform: translateY(-2px);
+  transform: scale(1.05) !important;
   box-shadow:
-    6px 6px 12px var(--neu-shadow-dark),
-    -6px -6px 12px var(--neu-shadow-light);
+    6px 6px 14px var(--neu-shadow-dark),
+    -6px -6px 14px var(--neu-shadow-light) !important;
 }
 
+/* 点击态: 按下效果 + 阴影减弱 */
 .neu-btn:active {
-  transform: translateY(1px);
+  transform: scale(0.98) !important;
   box-shadow:
     inset 3px 3px 6px var(--neu-shadow-dark),
-    inset -3px -3px 6px var(--neu-shadow-light);
+    inset -3px -3px 6px var(--neu-shadow-light) !important;
+  transition-duration: 0.1s !important;
 }
 
-/* Primary button with hover/click effects */
+/* 主色按钮 */
 .neu-btn-primary {
-  background: linear-gradient(135deg, var(--neu-accent), var(--neu-accent-light));
-  border-radius: 12px;
+  background: linear-gradient(135deg, var(--neu-accent), var(--neu-accent-light)) !important;
+  backdrop-filter: blur(var(--neu-blur)) !important;
+  -webkit-backdrop-filter: blur(var(--neu-blur)) !important;
+  border-radius: var(--neu-radius-sm) !important;
   box-shadow:
     4px 4px 8px var(--neu-shadow-dark),
-    -4px -4px 8px var(--neu-shadow-light);
-  transition: all 0.25s cubic-bezier(0.22, 1, 0.36, 1);
-  border: none;
-  cursor: pointer;
-  color: #ffffff;
-  position: relative;
-  overflow: hidden;
+    -4px -4px 8px var(--neu-shadow-light) !important;
+  transition: all 0.3s var(--ease-smooth) !important;
+  border: none !important;
+  cursor: pointer !important;
+  color: #ffffff !important;
+  position: relative !important;
+  overflow: hidden !important;
 }
 
 .dark .neu-btn-primary {
-  color: #0d0d0d;
+  color: #0d0d0d !important;
 }
 
+/* 悬停态: 放大1.05 + 阴影加深 */
 .neu-btn-primary:hover {
-  transform: translateY(-2px);
+  transform: scale(1.05) translateY(-2px) !important;
   box-shadow:
-    6px 6px 12px var(--neu-shadow-dark),
-    -6px -6px 12px var(--neu-shadow-light),
-    0 6px 20px rgba(90,125,143,0.3);
-  background: linear-gradient(135deg, var(--neu-accent-light), var(--neu-accent));
+    6px 6px 14px var(--neu-shadow-dark),
+    -6px -6px 14px var(--neu-shadow-light),
+    0 6px 24px rgba(90,125,143,0.3) !important;
+  background: linear-gradient(135deg, var(--neu-accent-light), var(--neu-accent)) !important;
 }
 
 .dark .neu-btn-primary:hover {
   box-shadow:
-    6px 6px 12px var(--neu-shadow-dark),
-    -6px -6px 12px var(--neu-shadow-light),
-    0 6px 20px rgba(212,175,55,0.35);
+    6px 6px 14px var(--neu-shadow-dark),
+    -6px -6px 14px var(--neu-shadow-light),
+    0 6px 24px rgba(212,175,55,0.35) !important;
 }
 
+/* 点击态: scale 0.98 + 内阴影 */
 .neu-btn-primary:active {
-  transform: translateY(1px) scale(0.97);
+  transform: scale(0.98) translateY(0) !important;
   box-shadow:
     inset 3px 3px 6px rgba(0,0,0,0.25),
-    inset -3px -3px 6px rgba(255,255,255,0.1);
+    inset -3px -3px 6px rgba(255,255,255,0.1) !important;
+  transition-duration: 0.1s !important;
 }
 
-/* Ripple container for button click effects */
+/* 涟漪效果容器 */
 .neu-ripple-container {
-  position: relative;
-  overflow: hidden;
+  position: relative !important;
+  overflow: hidden !important;
 }
 
 .neu-ripple {
-  position: absolute;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.4);
-  animation: neuRipple 0.6s ease-out forwards;
-  pointer-events: none;
+  position: absolute !important;
+  border-radius: 50% !important;
+  background: rgba(255, 255, 255, 0.4) !important;
+  animation: neuRipple 0.6s ease-out forwards !important;
+  pointer-events: none !important;
 }
 
 .dark .neu-ripple {
-  background: rgba(212, 175, 55, 0.3);
+  background: rgba(212, 175, 55, 0.3) !important;
 }
 
-/* ============================================
-   INPUT STYLES
-   ============================================ */
+/* ================================================================
+   输入框
+   ================================================================ */
 
 .neu-input {
-  background: var(--neu-bg);
-  border-radius: 12px;
+  background: var(--neu-bg-glass) !important;
+  backdrop-filter: blur(var(--neu-blur)) !important;
+  -webkit-backdrop-filter: blur(var(--neu-blur)) !important;
+  border-radius: var(--neu-radius-sm) !important;
   box-shadow:
     inset 3px 3px 6px var(--neu-shadow-dark),
-    inset -3px -3px 6px var(--neu-shadow-light);
-  border: none;
-  transition: all 0.3s ease;
+    inset -3px -3px 6px var(--neu-shadow-light) !important;
+  border: none !important;
+  transition: all 0.3s var(--ease-smooth) !important;
 }
 
 .neu-input:focus {
   animation: neuInputGlow 2s ease-in-out infinite !important;
-  outline: none;
+  outline: none !important;
 }
 
 .dark .neu-input:focus {
   box-shadow: inset 3px 3px 6px var(--neu-shadow-dark), inset -3px -3px 6px var(--neu-shadow-light), 0 0 0 3px var(--neu-accent), 0 0 20px rgba(212,175,55,0.25) !important;
-  outline: none;
+  outline: none !important;
 }
 
-/* ============================================
-   PROGRESS BAR
-   ============================================ */
+/* ================================================================
+   进度条 (毛玻璃 + 流光)
+   ================================================================ */
 
 .neu-progress-track {
-  background: var(--neu-bg);
-  border-radius: 12px;
+  background: var(--neu-bg-glass) !important;
+  backdrop-filter: blur(var(--neu-blur)) !important;
+  -webkit-backdrop-filter: blur(var(--neu-blur)) !important;
+  border-radius: var(--neu-radius-sm) !important;
   box-shadow:
     inset 3px 3px 6px var(--neu-shadow-dark),
-    inset -3px -3px 6px var(--neu-shadow-light);
-  overflow: hidden;
+    inset -3px -3px 6px var(--neu-shadow-light) !important;
+  overflow: hidden !important;
 }
 
 .neu-progress-fill {
@@ -472,44 +459,46 @@ body::before {
     var(--neu-accent-light) 30%,
     var(--neu-accent) 60%,
     var(--neu-accent-light) 100%
-  );
-  background-size: 200% 100%;
+  ) !important;
+  background-size: 200% 100% !important;
   animation: neuShimmer 2s linear infinite !important;
-  border-radius: 12px;
-  transition: width 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+  border-radius: var(--neu-radius-sm) !important;
+  transition: width 0.6s var(--ease-bounce) !important;
   box-shadow:
     2px 2px 4px rgba(0,0,0,0.1),
-    -1px -1px 2px rgba(255,255,255,0.2);
+    -1px -1px 2px rgba(255,255,255,0.2) !important;
 }
 
 .dark .neu-progress-fill {
   box-shadow:
     2px 2px 4px rgba(0,0,0,0.4),
-    0 0 10px rgba(212,175,55,0.35);
+    0 0 12px rgba(212,175,55,0.35) !important;
 }
 
-/* ============================================
-   TERMINAL
-   ============================================ */
+/* ================================================================
+   终端 (深色毛玻璃)
+   ================================================================ */
 
 .neu-terminal {
-  background: #1a1e23;
-  border-radius: 16px;
+  background: rgba(26, 30, 35, 0.75) !important;
+  backdrop-filter: blur(var(--neu-blur-heavy)) !important;
+  -webkit-backdrop-filter: blur(var(--neu-blur-heavy)) !important;
+  border-radius: var(--neu-radius) !important;
   box-shadow:
     inset 4px 4px 10px rgba(0,0,0,0.5),
-    inset -4px -4px 10px rgba(60,70,80,0.3);
+    inset -4px -4px 10px rgba(60,70,80,0.3) !important;
 }
 
 .dark .neu-terminal {
-  background: #050505;
+  background: rgba(5, 5, 5, 0.8) !important;
   box-shadow:
     inset 4px 4px 10px rgba(0,0,0,0.8),
-    inset -2px -2px 6px rgba(30,30,30,0.3);
+    inset -2px -2px 6px rgba(30,30,30,0.3) !important;
 }
 
-/* ============================================
-   SCROLLBAR
-   ============================================ */
+/* ================================================================
+   滚动条
+   ================================================================ */
 
 ::-webkit-scrollbar {
   width: 8px;
@@ -534,122 +523,275 @@ body::before {
   transition: background 0.2s ease;
 }
 
-/* ============================================
-   SIDEBAR NAVIGATION
-   ============================================ */
+/* ================================================================
+   侧边栏导航
+   ================================================================ */
 
 .neu-nav-item {
-  position: relative;
-  transition: all 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+  position: relative !important;
+  transition: all 0.3s var(--ease-smooth) !important;
 }
 
 .neu-nav-item::before {
-  content: '';
-  position: absolute;
-  left: -4px;
-  top: 50%;
-  transform: translateY(-50%) scaleY(0);
-  width: 4px;
-  height: 60%;
-  border-radius: 0 4px 4px 0;
-  background: var(--neu-accent);
-  transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+  content: '' !important;
+  position: absolute !important;
+  left: -4px !important;
+  top: 50% !important;
+  transform: translateY(-50%) scaleY(0) !important;
+  width: 4px !important;
+  height: 60% !important;
+  border-radius: 0 4px 4px 0 !important;
+  background: var(--neu-accent) !important;
+  transition: transform 0.3s var(--ease-smooth) !important;
 }
 
 .neu-nav-active::before {
-  animation: neuNavSlide 0.3s cubic-bezier(0.22, 1, 0.36, 1) forwards !important;
-  transform: translateY(-50%) scaleY(1);
+  animation: neuNavSlide 0.3s var(--ease-bounce) forwards !important;
+  transform: translateY(-50%) scaleY(1) !important;
 }
 
 .neu-nav-item:hover {
-  transform: translateX(4px);
+  transform: translateX(4px) !important;
 }
 
-/* ============================================
-   HOVER EFFECTS
-   ============================================ */
+/* ================================================================
+   Hover 光晕效果
+   ================================================================ */
 
 .neu-glow-hover {
-  transition: box-shadow 0.3s ease, transform 0.3s ease;
+  transition: box-shadow 0.3s var(--ease-smooth), transform 0.3s var(--ease-smooth) !important;
 }
 
 .neu-glow-hover:hover {
   box-shadow:
-    6px 6px 12px var(--neu-shadow-dark),
-    -6px -6px 12px var(--neu-shadow-light),
-    0 0 25px rgba(90,125,143,0.2);
-  transform: translateY(-3px);
+    6px 6px 14px var(--neu-shadow-dark),
+    -6px -6px 14px var(--neu-shadow-light),
+    0 0 30px rgba(90,125,143,0.2) !important;
+  transform: translateY(-3px) scale(1.02) !important;
 }
 
 .dark .neu-glow-hover:hover {
   box-shadow:
-    6px 6px 12px var(--neu-shadow-dark),
-    -6px -6px 12px var(--neu-shadow-light),
-    0 0 25px rgba(212,175,55,0.2);
+    6px 6px 14px var(--neu-shadow-dark),
+    -6px -6px 14px var(--neu-shadow-light),
+    0 0 30px rgba(212,175,55,0.2) !important;
 }
 
+/* 文件项 hover 放大 */
 .neu-item-hover {
-  transition: all 0.25s cubic-bezier(0.22, 1, 0.36, 1);
+  transition: all 0.25s var(--ease-smooth) !important;
 }
 
 .neu-item-hover:hover {
-  transform: scale(1.08);
-  box-shadow: 4px 4px 8px var(--neu-shadow-dark), -4px -4px 8px var(--neu-shadow-light);
+  transform: scale(1.08) !important;
+  box-shadow: 4px 4px 8px var(--neu-shadow-dark), -4px -4px 8px var(--neu-shadow-light) !important;
 }
 
-/* ============================================
-   SKELETON LOADING
-   ============================================ */
+/* ================================================================
+   骨架屏脉冲
+   ================================================================ */
 
 .neu-skeleton {
-  animation: neuSkeletonPulse 1.5s ease-in-out infinite;
+  animation: neuSkeletonPulse 1.5s ease-in-out infinite !important;
   background: linear-gradient(
     90deg,
     var(--neu-bg) 0%,
     var(--neu-shadow-light) 50%,
     var(--neu-bg) 100%
-  );
-  background-size: 200% 100%;
-  border-radius: 8px;
+  ) !important;
+  background-size: 200% 100% !important;
+  border-radius: var(--neu-radius-xs) !important;
 }
 
-/* ============================================
-   antd Component Overrides
-   ============================================ */
+/* ================================================================
+   antd 组件毛玻璃拟态覆盖
+   ================================================================ */
 
-/* Primary button */
+/* antd 主色按钮 - 三态动效 */
 .ant-btn-primary {
   background: linear-gradient(135deg, var(--neu-accent), var(--neu-accent-light)) !important;
   border-color: var(--neu-accent) !important;
+  border-radius: var(--neu-radius-sm) !important;
   box-shadow: 4px 4px 8px var(--neu-shadow-dark), -4px -4px 8px var(--neu-shadow-light) !important;
-  transition: all 0.25s cubic-bezier(0.22, 1, 0.36, 1) !important;
+  transition: all 0.3s var(--ease-smooth) !important;
 }
 
+/* 悬停态 */
 .ant-btn-primary:hover {
   background: linear-gradient(135deg, var(--neu-accent-light), var(--neu-accent)) !important;
   border-color: var(--neu-accent-light) !important;
-  transform: translateY(-2px) !important;
-  box-shadow: 6px 6px 12px var(--neu-shadow-dark), -6px -6px 12px var(--neu-shadow-light), 0 6px 20px rgba(90,125,143,0.25) !important;
+  transform: scale(1.05) translateY(-2px) !important;
+  box-shadow: 6px 6px 14px var(--neu-shadow-dark), -6px -6px 14px var(--neu-shadow-light), 0 6px 24px rgba(90,125,143,0.25) !important;
 }
 
 .dark .ant-btn-primary:hover {
-  box-shadow: 6px 6px 12px var(--neu-shadow-dark), -6px -6px 12px var(--neu-shadow-light), 0 6px 20px rgba(212,175,55,0.3) !important;
+  box-shadow: 6px 6px 14px var(--neu-shadow-dark), -6px -6px 14px var(--neu-shadow-light), 0 6px 24px rgba(212,175,55,0.3) !important;
 }
 
+/* 点击态 */
 .ant-btn-primary:active {
-  transform: translateY(1px) scale(0.96) !important;
+  transform: scale(0.98) translateY(0) !important;
   box-shadow: inset 3px 3px 6px rgba(0,0,0,0.25), inset -3px -3px 6px rgba(255,255,255,0.08) !important;
+  transition-duration: 0.1s !important;
 }
 
-/* antd danger button */
+/* 危险按钮 */
 .ant-btn-dangerous.ant-btn-primary:hover {
-  box-shadow: 6px 6px 12px var(--neu-shadow-dark), -6px -6px 12px var(--neu-shadow-light), 0 6px 20px rgba(255,77,79,0.3) !important;
+  box-shadow: 6px 6px 14px var(--neu-shadow-dark), -6px -6px 14px var(--neu-shadow-light), 0 6px 24px rgba(255,77,79,0.3) !important;
 }
 
-/* Dark mode antd overrides */
+/* antd 默认按钮三态 */
+.ant-btn-default {
+  border-radius: var(--neu-radius-sm) !important;
+  background: var(--neu-bg-glass) !important;
+  backdrop-filter: blur(var(--neu-blur)) !important;
+  -webkit-backdrop-filter: blur(var(--neu-blur)) !important;
+  border: none !important;
+  box-shadow: 4px 4px 8px var(--neu-shadow-dark), -4px -4px 8px var(--neu-shadow-light) !important;
+  transition: all 0.3s var(--ease-smooth) !important;
+}
+
+.ant-btn-default:hover {
+  transform: scale(1.05) translateY(-2px) !important;
+  box-shadow: 6px 6px 14px var(--neu-shadow-dark), -6px -6px 14px var(--neu-shadow-light) !important;
+}
+
+.ant-btn-default:active {
+  transform: scale(0.98) !important;
+  box-shadow: inset 3px 3px 6px var(--neu-shadow-dark), inset -3px -3px 6px var(--neu-shadow-light) !important;
+  transition-duration: 0.1s !important;
+}
+
+/* 暗黑模式按钮文字色 */
 .dark .ant-btn-primary {
   color: #0d0d0d !important;
 }
+
+/* ================================================================
+   antd 卡片 (毛玻璃)
+   ================================================================ */
+
+.ant-card {
+  background: var(--neu-bg-glass) !important;
+  backdrop-filter: blur(var(--neu-blur)) !important;
+  -webkit-backdrop-filter: blur(var(--neu-blur)) !important;
+  border: none !important;
+  border-radius: var(--neu-radius) !important;
+  box-shadow: 6px 6px 12px var(--neu-shadow-dark), -6px -6px 12px var(--neu-shadow-light) !important;
+  transition: box-shadow 0.3s var(--ease-smooth), transform 0.3s var(--ease-smooth) !important;
+}
+
+.ant-card:hover {
+  transform: translateY(-3px) scale(1.01) !important;
+  box-shadow: 6px 6px 14px var(--neu-shadow-dark), -6px -6px 14px var(--neu-shadow-light), 0 0 24px rgba(90,125,143,0.12) !important;
+}
+
+.dark .ant-card:hover {
+  box-shadow: 6px 6px 14px var(--neu-shadow-dark), -6px -6px 14px var(--neu-shadow-light), 0 0 24px rgba(212,175,55,0.12) !important;
+}
+
+/* ================================================================
+   antd 弹窗 (毛玻璃 + 入场动画)
+   ================================================================ */
+
+.ant-modal-content {
+  background: var(--neu-bg-glass) !important;
+  backdrop-filter: blur(var(--neu-blur-heavy)) !important;
+  -webkit-backdrop-filter: blur(var(--neu-blur-heavy)) !important;
+  border-radius: var(--neu-radius) !important;
+  box-shadow: 8px 8px 20px var(--neu-shadow-dark), -8px -8px 20px var(--neu-shadow-light) !important;
+  animation: neuModalEnter 0.4s var(--ease-bounce) !important;
+}
+
+/* ================================================================
+   antd 消息 (入场动画)
+   ================================================================ */
+
+.ant-message-notice {
+  animation: neuMsgEnter 0.35s var(--ease-bounce) !important;
+}
+
+/* ================================================================
+   antd 输入框 (毛玻璃内凹)
+   ================================================================ */
+
+.ant-input,
+.ant-input-affix-wrapper {
+  background: var(--neu-bg-glass) !important;
+  backdrop-filter: blur(var(--neu-blur)) !important;
+  -webkit-backdrop-filter: blur(var(--neu-blur)) !important;
+  border: none !important;
+  border-radius: var(--neu-radius-sm) !important;
+  box-shadow: inset 3px 3px 6px var(--neu-shadow-dark), inset -3px -3px 6px var(--neu-shadow-light) !important;
+  transition: all 0.3s var(--ease-smooth) !important;
+}
+
+.ant-input:focus,
+.ant-input-focused {
+  box-shadow: inset 3px 3px 6px var(--neu-shadow-dark), inset -3px -3px 6px var(--neu-shadow-light), 0 0 0 2px var(--neu-accent) !important;
+}
+
+/* ================================================================
+   antd 选择器 (毛玻璃)
+   ================================================================ */
+
+.ant-select-selector {
+  background: var(--neu-bg-glass) !important;
+  backdrop-filter: blur(var(--neu-blur)) !important;
+  -webkit-backdrop-filter: blur(var(--neu-blur)) !important;
+  border: none !important;
+  border-radius: var(--neu-radius-sm) !important;
+  box-shadow: inset 3px 3px 6px var(--neu-shadow-dark), inset -3px -3px 6px var(--neu-shadow-light) !important;
+  transition: all 0.3s var(--ease-smooth) !important;
+}
+
+/* ================================================================
+   antd 弹出层 (毛玻璃)
+   ================================================================ */
+
+.ant-popover-inner {
+  background: var(--neu-bg-glass) !important;
+  backdrop-filter: blur(var(--neu-blur-heavy)) !important;
+  -webkit-backdrop-filter: blur(var(--neu-blur-heavy)) !important;
+  border-radius: var(--neu-radius-sm) !important;
+  box-shadow: 4px 4px 8px var(--neu-shadow-dark), -4px -4px 8px var(--neu-shadow-light) !important;
+}
+
+/* ================================================================
+   antd 悬浮按钮 (毛玻璃)
+   ================================================================ */
+
+.ant-float-btn {
+  background: var(--neu-bg-glass) !important;
+  backdrop-filter: blur(var(--neu-blur)) !important;
+  -webkit-backdrop-filter: blur(var(--neu-blur)) !important;
+  border-radius: 50% !important;
+  box-shadow: 4px 4px 8px var(--neu-shadow-dark), -4px -4px 8px var(--neu-shadow-light) !important;
+  transition: all 0.3s var(--ease-smooth) !important;
+}
+
+.ant-float-btn:hover {
+  transform: scale(1.15) !important;
+  box-shadow: 6px 6px 14px var(--neu-shadow-dark), -6px -6px 14px var(--neu-shadow-light) !important;
+}
+
+.ant-float-btn:active {
+  transform: scale(0.95) !important;
+  box-shadow: inset 2px 2px 4px var(--neu-shadow-dark), inset -2px -2px 4px var(--neu-shadow-light) !important;
+  transition-duration: 0.1s !important;
+}
+
+/* ================================================================
+   antd 确认弹窗
+   ================================================================ */
+
+.ant-popconfirm {
+  animation: neuModalEnter 0.3s var(--ease-bounce) !important;
+}
+
+/* ================================================================
+   暗黑模式 antd 覆盖
+   ================================================================ */
 
 .dark .ant-card-head-title {
   color: var(--neu-accent) !important;
@@ -671,11 +813,13 @@ body::before {
 }
 
 .dark .ant-popover-inner {
-  background: #111111 !important;
+  background: rgba(17, 17, 17, 0.85) !important;
 }
 
 .dark .ant-select-dropdown {
-  background: #111111 !important;
+  background: rgba(17, 17, 17, 0.85) !important;
+  backdrop-filter: blur(var(--neu-blur-heavy)) !important;
+  -webkit-backdrop-filter: blur(var(--neu-blur-heavy)) !important;
 }
 
 .dark .ant-select-item {
@@ -683,11 +827,11 @@ body::before {
 }
 
 .dark .ant-select-item-option-active {
-  background: #1a1a1a !important;
+  background: rgba(26, 26, 26, 0.8) !important;
 }
 
 .dark .ant-select-item-option-selected {
-  background: #1a1a1a !important;
+  background: rgba(26, 26, 26, 0.8) !important;
   color: var(--neu-accent) !important;
 }
 
@@ -696,89 +840,19 @@ body::before {
 }
 
 .dark .ant-float-btn-default {
-  background: #0d0d0d !important;
+  background: rgba(13, 13, 13, 0.7) !important;
   color: var(--neu-accent) !important;
 }
 
 .dark .ant-message-notice-content {
-  background: #111111 !important;
+  background: rgba(17, 17, 17, 0.85) !important;
+  backdrop-filter: blur(var(--neu-blur)) !important;
+  -webkit-backdrop-filter: blur(var(--neu-blur)) !important;
   color: var(--neu-text) !important;
   box-shadow: 4px 4px 8px #050505, -4px -4px 8px #1a1a1a !important;
 }
 
-/* Card */
-.ant-card {
-  background: var(--neu-bg) !important;
-  border: none !important;
-  border-radius: 16px !important;
-  box-shadow: 6px 6px 12px var(--neu-shadow-dark), -6px -6px 12px var(--neu-shadow-light) !important;
-  transition: box-shadow 0.3s ease, transform 0.3s ease !important;
-}
-
-.ant-card:hover {
-  transform: translateY(-2px);
-  box-shadow: 6px 6px 12px var(--neu-shadow-dark), -6px -6px 12px var(--neu-shadow-light), 0 0 20px rgba(90,125,143,0.12) !important;
-}
-
-.dark .ant-card:hover {
-  box-shadow: 6px 6px 12px var(--neu-shadow-dark), -6px -6px 12px var(--neu-shadow-light), 0 0 20px rgba(212,175,55,0.12) !important;
-}
-
-/* Modal */
-.ant-modal-content {
-  background: var(--neu-bg) !important;
-  border-radius: 16px !important;
-  box-shadow: 8px 8px 16px var(--neu-shadow-dark), -8px -8px 16px var(--neu-shadow-light) !important;
-  animation: neuModalEnter 0.4s cubic-bezier(0.22, 1, 0.36, 1) !important;
-}
-
-/* Message */
-.ant-message-notice {
-  animation: neuMsgEnter 0.35s cubic-bezier(0.22, 1, 0.36, 1) !important;
-}
-
-/* Input */
-.ant-input,
-.ant-input-affix-wrapper {
-  background: var(--neu-bg) !important;
-  border: none !important;
-  border-radius: 12px !important;
-  box-shadow: inset 3px 3px 6px var(--neu-shadow-dark), inset -3px -3px 6px var(--neu-shadow-light) !important;
-  transition: all 0.3s ease !important;
-}
-
-.ant-input:focus,
-.ant-input-focused {
-  box-shadow: inset 3px 3px 6px var(--neu-shadow-dark), inset -3px -3px 6px var(--neu-shadow-light), 0 0 0 2px var(--neu-accent) !important;
-}
-
-.ant-select-selector {
-  background: var(--neu-bg) !important;
-  border: none !important;
-  border-radius: 12px !important;
-  box-shadow: inset 3px 3px 6px var(--neu-shadow-dark), inset -3px -3px 6px var(--neu-shadow-light) !important;
-  transition: all 0.3s ease !important;
-}
-
-.ant-popover-inner {
-  background: var(--neu-bg) !important;
-  border-radius: 12px !important;
-  box-shadow: 4px 4px 8px var(--neu-shadow-dark), -4px -4px 8px var(--neu-shadow-light) !important;
-}
-
-.ant-float-btn {
-  background: var(--neu-bg) !important;
-  border-radius: 50% !important;
-  box-shadow: 4px 4px 8px var(--neu-shadow-dark), -4px -4px 8px var(--neu-shadow-light) !important;
-  transition: all 0.3s cubic-bezier(0.22, 1, 0.36, 1) !important;
-}
-
-.ant-float-btn:hover {
-  transform: scale(1.15) !important;
-  box-shadow: 6px 6px 12px var(--neu-shadow-dark), -6px -6px 12px var(--neu-shadow-light) !important;
-}
-
-/* Dark mode input */
+/* 暗黑模式输入框文字色 */
 .dark .ant-input,
 .dark .ant-input-affix-wrapper input {
   color: var(--neu-text) !important;
@@ -790,4 +864,17 @@ body::before {
 
 .dark .ant-select-selection-item {
   color: var(--neu-text) !important;
+}
+
+/* ================================================================
+   移动端触控反馈增强
+   ================================================================ */
+
+@media (hover: none) and (pointer: coarse) {
+  .neu-btn:active,
+  .neu-btn-primary:active,
+  .ant-btn-primary:active,
+  .ant-btn-default:active {
+    transform: scale(0.95) !important;
+  }
 }

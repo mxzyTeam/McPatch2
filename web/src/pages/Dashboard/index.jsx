@@ -4,7 +4,7 @@ import {userCheckTokenRequest, userSignOutRequest} from "@/api/user.js";
 import {message} from "antd";
 import {useDispatch, useSelector} from "react-redux";
 import {clearToken} from "@/store/modules/userStore.js";
-import {useEffect, useState} from "react";
+import {useEffect, useState, useRef} from "react";
 
 const navs = [
   {
@@ -44,15 +44,27 @@ const Index = () => {
   const user = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const [messageApi, contextHolder] = message.useMessage();
-  const [pageKey, setPageKey] = useState(0);
+
+  // 页面切换动画 - 用内联 style 控制
+  const [pageVisible, setPageVisible] = useState(true);
+  const prevPathRef = useRef(location.pathname);
 
   useEffect(() => {
     checkToken()
   }, []);
 
-  // Re-trigger page enter animation on route change
+  // 路由变化时触发页面过渡动画
   useEffect(() => {
-    setPageKey(prev => prev + 1);
+    if (prevPathRef.current !== location.pathname) {
+      prevPathRef.current = location.pathname;
+      setPageVisible(false);
+      // 先让页面消失，然后下一帧让它出现
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          setPageVisible(true);
+        });
+      });
+    }
   }, [location.pathname]);
 
   const checkToken = async () => {
@@ -158,7 +170,11 @@ const Index = () => {
         </div>
 
         <div className="ml-60 flex-grow">
-          <div key={pageKey} className="neu-page-enter">
+          <div style={{
+            opacity: pageVisible ? 1 : 0,
+            transform: pageVisible ? 'translateY(0)' : 'translateY(30px)',
+            transition: 'opacity 0.5s cubic-bezier(0.22, 1, 0.36, 1), transform 0.5s cubic-bezier(0.22, 1, 0.36, 1)',
+          }}>
             <Outlet/>
           </div>
         </div>
