@@ -2,24 +2,957 @@
 @tailwind components;
 @tailwind utilities;
 
-body {
-    margin: 0;
-    border: 0;
-    padding: 0;
+/* ================================================================
+   拟态毛玻璃设计系统 (Neumorphic Glassmorphism)
+   核心修复: 硬编码 cubic-bezier 值替代 var()，超高特异性选择器
+   确保动画在 antd v5 CSS-in-JS 环境下可靠生效
+   ================================================================ */
+
+:root {
+  --neu-bg: #e0e5ec;
+  --neu-bg-glass: rgba(224, 229, 236, 0.65);
+  --neu-shadow-dark: #a3b1c6;
+  --neu-shadow-light: #ffffff;
+  --neu-accent: #5a7d8f;
+  --neu-accent-light: #7fa8bc;
+  --neu-text: #2d3436;
+  --neu-text-muted: #636e72;
+  --neu-blur: 12px;
+  --neu-blur-heavy: 18px;
+  --neu-radius: 16px;
+  --neu-radius-sm: 12px;
+  --neu-radius-xs: 8px;
 }
+
+.dark {
+  --neu-bg: #0d0d0d;
+  --neu-bg-glass: rgba(13, 13, 13, 0.55);
+  --neu-shadow-dark: #050505;
+  --neu-shadow-light: #1a1a1a;
+  --neu-accent: #D4AF37;
+  --neu-accent-light: #F0D060;
+  --neu-text: #E8D5A3;
+  --neu-text-muted: #9E8E6E;
+}
+
+* {
+  -webkit-tap-highlight-color: transparent;
+}
+
+html, body {
+  margin: 0;
+  border: 0;
+  padding: 0;
+}
+
+/* 毛玻璃背景底层 */
+body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, #e8ecf1 0%, #d1d9e6 50%, #e0e5ec 100%);
+  z-index: -2;
+}
+
+.dark body::before {
+  background: linear-gradient(135deg, #0d0d0d 0%, #111111 50%, #0a0a0a 100%);
+}
+
+/* ================================================================
+   全局主题切换过渡 - 使用硬编码值
+   ================================================================ */
+.neu-theme-transition,
+.neu-theme-transition *,
+.neu-theme-transition *::before,
+.neu-theme-transition *::after {
+  transition: background-color 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+              color 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+              box-shadow 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+              border-color 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) !important;
+}
+
+/* ================================================================
+   拟态组件基础 - 所有 transition 使用硬编码 cubic-bezier
+   ================================================================ */
+
+.neu-raised {
+  background: var(--neu-bg-glass) !important;
+  backdrop-filter: blur(var(--neu-blur)) !important;
+  -webkit-backdrop-filter: blur(var(--neu-blur)) !important;
+  border-radius: var(--neu-radius) !important;
+  box-shadow:
+    6px 6px 12px var(--neu-shadow-dark),
+    -6px -6px 12px var(--neu-shadow-light) !important;
+  transform: none !important;
+  will-change: transform, box-shadow !important;
+  transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+              box-shadow 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94) !important;
+}
+
+.neu-raised-sm {
+  background: var(--neu-bg-glass) !important;
+  backdrop-filter: blur(var(--neu-blur)) !important;
+  -webkit-backdrop-filter: blur(var(--neu-blur)) !important;
+  border-radius: var(--neu-radius-sm) !important;
+  box-shadow:
+    4px 4px 8px var(--neu-shadow-dark),
+    -4px -4px 8px var(--neu-shadow-light) !important;
+  transform: none !important;
+  will-change: transform, box-shadow !important;
+  transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+              box-shadow 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94) !important;
+}
+
+.neu-raised-xs {
+  background: var(--neu-bg-glass) !important;
+  backdrop-filter: blur(var(--neu-blur)) !important;
+  -webkit-backdrop-filter: blur(var(--neu-blur)) !important;
+  border-radius: var(--neu-radius-xs) !important;
+  box-shadow:
+    2px 2px 5px var(--neu-shadow-dark),
+    -2px -2px 5px var(--neu-shadow-light) !important;
+  transform: none !important;
+  will-change: transform, box-shadow !important;
+  transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+              box-shadow 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94) !important;
+}
+
+.neu-inset {
+  background: var(--neu-bg-glass) !important;
+  backdrop-filter: blur(var(--neu-blur)) !important;
+  -webkit-backdrop-filter: blur(var(--neu-blur)) !important;
+  border-radius: var(--neu-radius) !important;
+  box-shadow:
+    inset 4px 4px 8px var(--neu-shadow-dark),
+    inset -4px -4px 8px var(--neu-shadow-light) !important;
+  transition: box-shadow 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94) !important;
+}
+
+.neu-inset-sm {
+  background: var(--neu-bg-glass) !important;
+  backdrop-filter: blur(var(--neu-blur)) !important;
+  -webkit-backdrop-filter: blur(var(--neu-blur)) !important;
+  border-radius: var(--neu-radius-sm) !important;
+  box-shadow:
+    inset 3px 3px 6px var(--neu-shadow-dark),
+    inset -3px -3px 6px var(--neu-shadow-light) !important;
+  transition: box-shadow 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94) !important;
+}
+
+.neu-inset-xs {
+  background: var(--neu-bg-glass) !important;
+  backdrop-filter: blur(var(--neu-blur)) !important;
+  -webkit-backdrop-filter: blur(var(--neu-blur)) !important;
+  border-radius: var(--neu-radius-xs) !important;
+  box-shadow:
+    inset 2px 2px 4px var(--neu-shadow-dark),
+    inset -2px -2px 4px var(--neu-shadow-light) !important;
+  transition: box-shadow 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94) !important;
+}
+
+/* ================================================================
+   入场动画 (Keyframes) - 硬编码 timing function
+   ================================================================ */
+
+@keyframes neuPageEnter {
+  0% {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes neuCardEnter {
+  0% {
+    opacity: 0;
+    transform: translateY(40px) scale(0.92);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes neuCardEnterLeft {
+  0% {
+    opacity: 0;
+    transform: translateX(-40px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes neuCardEnterScale {
+  0% {
+    opacity: 0;
+    transform: scale(0.85);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes neuShimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+@keyframes neuFloat {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-12px); }
+}
+
+@keyframes neuInputGlow {
+  0%, 100% {
+    box-shadow: inset 3px 3px 6px var(--neu-shadow-dark), inset -3px -3px 6px var(--neu-shadow-light), 0 0 0 2px var(--neu-accent);
+  }
+  50% {
+    box-shadow: inset 3px 3px 6px var(--neu-shadow-dark), inset -3px -3px 6px var(--neu-shadow-light), 0 0 0 4px var(--neu-accent), 0 0 20px rgba(90,125,143,0.25);
+  }
+}
+
+@keyframes neuNavSlide {
+  0% { transform: translateY(-50%) scaleY(0); }
+  100% { transform: translateY(-50%) scaleY(1); }
+}
+
+@keyframes neuModalEnter {
+  0% {
+    opacity: 0;
+    transform: scale(0.85) translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+@keyframes neuMsgEnter {
+  0% {
+    opacity: 0;
+    transform: translateY(-20px) scale(0.9);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes neuRipple {
+  0% {
+    transform: scale(0);
+    opacity: 0.6;
+  }
+  100% {
+    transform: scale(4);
+    opacity: 0;
+  }
+}
+
+@keyframes neuSkeletonPulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+
+@keyframes neuBounceClick {
+  0% { transform: scale(1); }
+  25% { transform: scale(0.92); }
+  50% { transform: scale(1.06); }
+  75% { transform: scale(0.98); }
+  100% { transform: scale(1); }
+}
+
+@keyframes neuRotateIn {
+  0% { transform: rotate(-180deg) scale(0.5); opacity: 0; }
+  100% { transform: rotate(0deg) scale(1); opacity: 1; }
+}
+
+/* 按钮点击缩放动画 */
+@keyframes neuBtnPress {
+  0% { transform: scale(1); }
+  40% { transform: scale(0.94); }
+  70% { transform: scale(1.03); }
+  100% { transform: scale(1); }
+}
+
+/* 悬停放大动画 */
+@keyframes neuHoverScale {
+  0% { transform: scale(1); }
+  100% { transform: scale(1.06); }
+}
+
+/* ================================================================
+   入场动画类 - 硬编码 cubic-bezier
+   ================================================================ */
+
+.neu-page-enter {
+  animation: neuPageEnter 0.6s cubic-bezier(0.22, 1, 0.36, 1) both !important;
+}
+
+.neu-card-enter {
+  animation: neuCardEnter 0.7s cubic-bezier(0.22, 1, 0.36, 1) both !important;
+}
+
+.neu-card-enter-left {
+  animation: neuCardEnterLeft 0.6s cubic-bezier(0.22, 1, 0.36, 1) both !important;
+}
+
+.neu-card-enter-scale {
+  animation: neuCardEnterScale 0.6s cubic-bezier(0.22, 1, 0.36, 1) both !important;
+}
+
+.neu-stagger-1 { animation-delay: 0.1s !important; }
+.neu-stagger-2 { animation-delay: 0.2s !important; }
+.neu-stagger-3 { animation-delay: 0.3s !important; }
+.neu-stagger-4 { animation-delay: 0.4s !important; }
+.neu-stagger-5 { animation-delay: 0.5s !important; }
+
+.neu-float {
+  animation: neuFloat 3s ease-in-out infinite !important;
+}
+
+.neu-btn-bounce {
+  animation: neuBounceClick 0.5s cubic-bezier(0.22, 1, 0.36, 1) both !important;
+}
+
+.neu-rotate-in {
+  animation: neuRotateIn 0.5s cubic-bezier(0.22, 1, 0.36, 1) both !important;
+}
+
+/* ================================================================
+   按钮三态动效 (默认/悬停/点击) - 纯 CSS 实现
+   关键: 显式 transform:none 初始值 + 硬编码 timing + will-change
+   ================================================================ */
+
+.neu-btn {
+  background: var(--neu-bg-glass) !important;
+  backdrop-filter: blur(var(--neu-blur)) !important;
+  -webkit-backdrop-filter: blur(var(--neu-blur)) !important;
+  border-radius: var(--neu-radius-sm) !important;
+  box-shadow:
+    4px 4px 8px var(--neu-shadow-dark),
+    -4px -4px 8px var(--neu-shadow-light) !important;
+  border: none !important;
+  cursor: pointer !important;
+  transform: none !important;
+  will-change: transform, box-shadow !important;
+  transition-property: transform, box-shadow, background !important;
+  transition-duration: 0.4s !important;
+  transition-timing-function: cubic-bezier(0.25, 0.46, 0.45, 0.94) !important;
+}
+
+/* 悬停态: 放大 + 阴影加深 */
+.neu-btn:hover {
+  transform: scale(1.08) !important;
+  box-shadow:
+    6px 6px 14px var(--neu-shadow-dark),
+    -6px -6px 14px var(--neu-shadow-light) !important;
+}
+
+/* 点击态: 按下 + 内阴影 */
+.neu-btn:active {
+  transform: scale(0.95) !important;
+  box-shadow:
+    inset 3px 3px 6px var(--neu-shadow-dark),
+    inset -3px -3px 6px var(--neu-shadow-light) !important;
+  transition-duration: 0.1s !important;
+}
+
+/* 主色按钮 */
+.neu-btn-primary {
+  background: linear-gradient(135deg, var(--neu-accent), var(--neu-accent-light)) !important;
+  backdrop-filter: blur(var(--neu-blur)) !important;
+  -webkit-backdrop-filter: blur(var(--neu-blur)) !important;
+  border-radius: var(--neu-radius-sm) !important;
+  box-shadow:
+    4px 4px 8px var(--neu-shadow-dark),
+    -4px -4px 8px var(--neu-shadow-light) !important;
+  border: none !important;
+  cursor: pointer !important;
+  color: #ffffff !important;
+  position: relative !important;
+  overflow: hidden !important;
+  transform: none !important;
+  will-change: transform, box-shadow, background !important;
+  transition-property: transform, box-shadow, background !important;
+  transition-duration: 0.4s !important;
+  transition-timing-function: cubic-bezier(0.25, 0.46, 0.45, 0.94) !important;
+}
+
+.dark .neu-btn-primary {
+  color: #0d0d0d !important;
+}
+
+/* 悬停态: 放大1.08 + 上浮 + 阴影加深 */
+.neu-btn-primary:hover {
+  transform: scale(1.08) translateY(-2px) !important;
+  box-shadow:
+    6px 6px 14px var(--neu-shadow-dark),
+    -6px -6px 14px var(--neu-shadow-light),
+    0 6px 24px rgba(90,125,143,0.3) !important;
+  background: linear-gradient(135deg, var(--neu-accent-light), var(--neu-accent)) !important;
+}
+
+.dark .neu-btn-primary:hover {
+  box-shadow:
+    6px 6px 14px var(--neu-shadow-dark),
+    -6px -6px 14px var(--neu-shadow-light),
+    0 6px 24px rgba(212,175,55,0.35) !important;
+}
+
+/* 点击态: scale 0.94 + 内阴影 */
+.neu-btn-primary:active {
+  transform: scale(0.94) translateY(0) !important;
+  box-shadow:
+    inset 3px 3px 6px rgba(0,0,0,0.25),
+    inset -3px -3px 6px rgba(255,255,255,0.1) !important;
+  transition-duration: 0.1s !important;
+}
+
+/* 涟漪效果容器 */
+.neu-ripple-container {
+  position: relative !important;
+  overflow: hidden !important;
+}
+
+.neu-ripple {
+  position: absolute !important;
+  border-radius: 50% !important;
+  background: rgba(255, 255, 255, 0.4) !important;
+  animation: neuRipple 0.6s ease-out forwards !important;
+  pointer-events: none !important;
+}
+
+.dark .neu-ripple {
+  background: rgba(212, 175, 55, 0.3) !important;
+}
+
+/* ================================================================
+   输入框
+   ================================================================ */
+
+.neu-input {
+  background: var(--neu-bg-glass) !important;
+  backdrop-filter: blur(var(--neu-blur)) !important;
+  -webkit-backdrop-filter: blur(var(--neu-blur)) !important;
+  border-radius: var(--neu-radius-sm) !important;
+  box-shadow:
+    inset 3px 3px 6px var(--neu-shadow-dark),
+    inset -3px -3px 6px var(--neu-shadow-light) !important;
+  border: none !important;
+  transition-property: box-shadow !important;
+  transition-duration: 0.4s !important;
+  transition-timing-function: cubic-bezier(0.25, 0.46, 0.45, 0.94) !important;
+}
+
+.neu-input:focus {
+  animation: neuInputGlow 2s ease-in-out infinite !important;
+  outline: none !important;
+}
+
+.dark .neu-input:focus {
+  box-shadow: inset 3px 3px 6px var(--neu-shadow-dark), inset -3px -3px 6px var(--neu-shadow-light), 0 0 0 3px var(--neu-accent), 0 0 20px rgba(212,175,55,0.25) !important;
+  outline: none !important;
+}
+
+/* ================================================================
+   进度条 (毛玻璃 + 流光)
+   ================================================================ */
+
+.neu-progress-track {
+  background: var(--neu-bg-glass) !important;
+  backdrop-filter: blur(var(--neu-blur)) !important;
+  -webkit-backdrop-filter: blur(var(--neu-blur)) !important;
+  border-radius: var(--neu-radius-sm) !important;
+  box-shadow:
+    inset 3px 3px 6px var(--neu-shadow-dark),
+    inset -3px -3px 6px var(--neu-shadow-light) !important;
+  overflow: hidden !important;
+}
+
+.neu-progress-fill {
+  background: linear-gradient(
+    90deg,
+    var(--neu-accent) 0%,
+    var(--neu-accent-light) 30%,
+    var(--neu-accent) 60%,
+    var(--neu-accent-light) 100%
+  ) !important;
+  background-size: 200% 100% !important;
+  animation: neuShimmer 2s linear infinite !important;
+  border-radius: var(--neu-radius-sm) !important;
+  transition: width 0.6s cubic-bezier(0.22, 1, 0.36, 1) !important;
+  box-shadow:
+    2px 2px 4px rgba(0,0,0,0.1),
+    -1px -1px 2px rgba(255,255,255,0.2) !important;
+}
+
+.dark .neu-progress-fill {
+  box-shadow:
+    2px 2px 4px rgba(0,0,0,0.4),
+    0 0 12px rgba(212,175,55,0.35) !important;
+}
+
+/* ================================================================
+   终端 (深色毛玻璃)
+   ================================================================ */
+
+.neu-terminal {
+  background: rgba(26, 30, 35, 0.75) !important;
+  backdrop-filter: blur(var(--neu-blur-heavy)) !important;
+  -webkit-backdrop-filter: blur(var(--neu-blur-heavy)) !important;
+  border-radius: var(--neu-radius) !important;
+  box-shadow:
+    inset 4px 4px 10px rgba(0,0,0,0.5),
+    inset -4px -4px 10px rgba(60,70,80,0.3) !important;
+}
+
+.dark .neu-terminal {
+  background: rgba(5, 5, 5, 0.8) !important;
+  box-shadow:
+    inset 4px 4px 10px rgba(0,0,0,0.8),
+    inset -2px -2px 6px rgba(30,30,30,0.3) !important;
+}
+
+/* ================================================================
+   滚动条
+   ================================================================ */
 
 ::-webkit-scrollbar {
-    width: 10px;
-    height: 1px;
-}
-
-::-webkit-scrollbar-thumb {
-    border-radius: 10px;
-    -webkit-box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
-    background: #ccc;
+  width: 8px;
+  height: 8px;
 }
 
 ::-webkit-scrollbar-track {
-    border-radius: 10px;
-    -webkit-box-shadow: inset 0 0 1px rgba(0, 0, 0, 0);
+  background: var(--neu-bg);
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--neu-shadow-dark);
+  border-radius: 10px;
+  box-shadow:
+    inset 2px 2px 4px var(--neu-shadow-dark),
+    inset -2px -2px 4px var(--neu-shadow-light);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--neu-accent);
+  transition: background 0.2s ease;
+}
+
+/* ================================================================
+   侧边栏导航 - 超高特异性
+   ================================================================ */
+
+.neu-nav-item {
+  position: relative !important;
+  transform: none !important;
+  will-change: transform !important;
+  transition-property: transform, color, background !important;
+  transition-duration: 0.4s !important;
+  transition-timing-function: cubic-bezier(0.25, 0.46, 0.45, 0.94) !important;
+}
+
+.neu-nav-item::before {
+  content: '' !important;
+  position: absolute !important;
+  left: -4px !important;
+  top: 50% !important;
+  transform: translateY(-50%) scaleY(0) !important;
+  width: 4px !important;
+  height: 60% !important;
+  border-radius: 0 4px 4px 0 !important;
+  background: var(--neu-accent) !important;
+  transition-property: transform !important;
+  transition-duration: 0.3s !important;
+  transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1) !important;
+}
+
+.neu-nav-active::before {
+  animation: neuNavSlide 0.3s cubic-bezier(0.22, 1, 0.36, 1) forwards !important;
+  transform: translateY(-50%) scaleY(1) !important;
+}
+
+.neu-nav-item:hover {
+  transform: translateX(6px) !important;
+}
+
+/* ================================================================
+   Hover 光晕效果
+   ================================================================ */
+
+.neu-glow-hover {
+  transform: none !important;
+  will-change: transform, box-shadow !important;
+  transition-property: transform, box-shadow !important;
+  transition-duration: 0.4s !important;
+  transition-timing-function: cubic-bezier(0.25, 0.46, 0.45, 0.94) !important;
+}
+
+.neu-glow-hover:hover {
+  box-shadow:
+    6px 6px 14px var(--neu-shadow-dark),
+    -6px -6px 14px var(--neu-shadow-light),
+    0 0 30px rgba(90,125,143,0.2) !important;
+  transform: translateY(-4px) scale(1.03) !important;
+}
+
+.dark .neu-glow-hover:hover {
+  box-shadow:
+    6px 6px 14px var(--neu-shadow-dark),
+    -6px -6px 14px var(--neu-shadow-light),
+    0 0 30px rgba(212,175,55,0.2) !important;
+}
+
+/* 文件项 hover 放大 */
+.neu-item-hover {
+  transform: none !important;
+  will-change: transform, box-shadow !important;
+  transition-property: transform, box-shadow !important;
+  transition-duration: 0.3s !important;
+  transition-timing-function: cubic-bezier(0.25, 0.46, 0.45, 0.94) !important;
+}
+
+.neu-item-hover:hover {
+  transform: scale(1.1) !important;
+  box-shadow: 4px 4px 8px var(--neu-shadow-dark), -4px -4px 8px var(--neu-shadow-light) !important;
+}
+
+/* ================================================================
+   骨架屏脉冲
+   ================================================================ */
+
+.neu-skeleton {
+  animation: neuSkeletonPulse 1.5s ease-in-out infinite !important;
+  background: linear-gradient(
+    90deg,
+    var(--neu-bg) 0%,
+    var(--neu-shadow-light) 50%,
+    var(--neu-bg) 100%
+  ) !important;
+  background-size: 200% 100% !important;
+  border-radius: var(--neu-radius-xs) !important;
+}
+
+/* ================================================================
+   antd 组件覆盖 - 使用超高特异性选择器
+   html body 前缀确保特异性碾压 antd 的 .css-hash.xxx 选择器
+   所有 transition 使用硬编码值，不使用 var()
+   ================================================================ */
+
+/* === antd 主色按钮 - 三态动效 === */
+html body .ant-btn.ant-btn-primary,
+html body button.ant-btn.ant-btn-primary {
+  background: linear-gradient(135deg, var(--neu-accent), var(--neu-accent-light)) !important;
+  border-color: var(--neu-accent) !important;
+  border-radius: var(--neu-radius-sm) !important;
+  box-shadow: 4px 4px 8px var(--neu-shadow-dark), -4px -4px 8px var(--neu-shadow-light) !important;
+  transform: none !important;
+  will-change: transform, box-shadow, background !important;
+  transition-property: transform, box-shadow, background, border-color !important;
+  transition-duration: 0.4s !important;
+  transition-timing-function: cubic-bezier(0.25, 0.46, 0.45, 0.94) !important;
+}
+
+/* 悬停态 */
+html body .ant-btn.ant-btn-primary:hover,
+html body button.ant-btn.ant-btn-primary:hover {
+  background: linear-gradient(135deg, var(--neu-accent-light), var(--neu-accent)) !important;
+  border-color: var(--neu-accent-light) !important;
+  transform: scale(1.08) translateY(-2px) !important;
+  box-shadow: 6px 6px 14px var(--neu-shadow-dark), -6px -6px 14px var(--neu-shadow-light), 0 6px 24px rgba(90,125,143,0.3) !important;
+}
+
+.dark html body .ant-btn.ant-btn-primary:hover,
+.dark html body button.ant-btn.ant-btn-primary:hover,
+html body .dark .ant-btn.ant-btn-primary:hover,
+html body .dark button.ant-btn.ant-btn-primary:hover {
+  box-shadow: 6px 6px 14px var(--neu-shadow-dark), -6px -6px 14px var(--neu-shadow-light), 0 6px 24px rgba(212,175,55,0.35) !important;
+}
+
+/* 点击态 */
+html body .ant-btn.ant-btn-primary:active,
+html body button.ant-btn.ant-btn-primary:active {
+  transform: scale(0.94) translateY(0) !important;
+  box-shadow: inset 3px 3px 6px rgba(0,0,0,0.25), inset -3px -3px 6px rgba(255,255,255,0.08) !important;
+  transition-duration: 0.1s !important;
+}
+
+/* 危险按钮 */
+html body .ant-btn.ant-btn-dangerous.ant-btn-primary:hover,
+html body button.ant-btn.ant-btn-dangerous.ant-btn-primary:hover {
+  box-shadow: 6px 6px 14px var(--neu-shadow-dark), -6px -6px 14px var(--neu-shadow-light), 0 6px 24px rgba(255,77,79,0.3) !important;
+}
+
+/* === antd 默认按钮三态 === */
+html body .ant-btn.ant-btn-default,
+html body button.ant-btn.ant-btn-default {
+  border-radius: var(--neu-radius-sm) !important;
+  background: var(--neu-bg-glass) !important;
+  backdrop-filter: blur(var(--neu-blur)) !important;
+  -webkit-backdrop-filter: blur(var(--neu-blur)) !important;
+  border: none !important;
+  box-shadow: 4px 4px 8px var(--neu-shadow-dark), -4px -4px 8px var(--neu-shadow-light) !important;
+  transform: none !important;
+  will-change: transform, box-shadow !important;
+  transition-property: transform, box-shadow, background !important;
+  transition-duration: 0.4s !important;
+  transition-timing-function: cubic-bezier(0.25, 0.46, 0.45, 0.94) !important;
+}
+
+html body .ant-btn.ant-btn-default:hover,
+html body button.ant-btn.ant-btn-default:hover {
+  transform: scale(1.08) translateY(-2px) !important;
+  box-shadow: 6px 6px 14px var(--neu-shadow-dark), -6px -6px 14px var(--neu-shadow-light) !important;
+}
+
+html body .ant-btn.ant-btn-default:active,
+html body button.ant-btn.ant-btn-default:active {
+  transform: scale(0.94) !important;
+  box-shadow: inset 3px 3px 6px var(--neu-shadow-dark), inset -3px -3px 6px var(--neu-shadow-light) !important;
+  transition-duration: 0.1s !important;
+}
+
+/* 暗黑模式按钮文字色 */
+.dark html body .ant-btn.ant-btn-primary,
+.dark html body button.ant-btn.ant-btn-primary,
+html body .dark .ant-btn.ant-btn-primary,
+html body .dark button.ant-btn.ant-btn-primary {
+  color: #0d0d0d !important;
+}
+
+/* === antd 卡片 (毛玻璃 + hover) === */
+html body .ant-card,
+html body div.ant-card {
+  background: var(--neu-bg-glass) !important;
+  backdrop-filter: blur(var(--neu-blur)) !important;
+  -webkit-backdrop-filter: blur(var(--neu-blur)) !important;
+  border: none !important;
+  border-radius: var(--neu-radius) !important;
+  box-shadow: 6px 6px 12px var(--neu-shadow-dark), -6px -6px 12px var(--neu-shadow-light) !important;
+  transform: none !important;
+  will-change: transform, box-shadow !important;
+  transition-property: transform, box-shadow !important;
+  transition-duration: 0.4s !important;
+  transition-timing-function: cubic-bezier(0.25, 0.46, 0.45, 0.94) !important;
+}
+
+html body .ant-card:hover,
+html body div.ant-card:hover {
+  transform: translateY(-4px) scale(1.02) !important;
+  box-shadow: 6px 6px 14px var(--neu-shadow-dark), -6px -6px 14px var(--neu-shadow-light), 0 0 24px rgba(90,125,143,0.15) !important;
+}
+
+.dark html body .ant-card:hover,
+.dark html body div.ant-card:hover,
+html body .dark .ant-card:hover,
+html body .dark div.ant-card:hover {
+  box-shadow: 6px 6px 14px var(--neu-shadow-dark), -6px -6px 14px var(--neu-shadow-light), 0 0 24px rgba(212,175,55,0.15) !important;
+}
+
+/* === antd 弹窗 (毛玻璃 + 入场动画) === */
+html body .ant-modal-content,
+html body div.ant-modal-content {
+  background: var(--neu-bg-glass) !important;
+  backdrop-filter: blur(var(--neu-blur-heavy)) !important;
+  -webkit-backdrop-filter: blur(var(--neu-blur-heavy)) !important;
+  border-radius: var(--neu-radius) !important;
+  box-shadow: 8px 8px 20px var(--neu-shadow-dark), -8px -8px 20px var(--neu-shadow-light) !important;
+  animation: neuModalEnter 0.4s cubic-bezier(0.22, 1, 0.36, 1) both !important;
+}
+
+/* === antd 消息 (入场动画) === */
+html body .ant-message-notice {
+  animation: neuMsgEnter 0.35s cubic-bezier(0.22, 1, 0.36, 1) both !important;
+}
+
+/* === antd 输入框 (毛玻璃内凹) === */
+html body .ant-input,
+html body input.ant-input,
+html body .ant-input-affix-wrapper {
+  background: var(--neu-bg-glass) !important;
+  backdrop-filter: blur(var(--neu-blur)) !important;
+  -webkit-backdrop-filter: blur(var(--neu-blur)) !important;
+  border: none !important;
+  border-radius: var(--neu-radius-sm) !important;
+  box-shadow: inset 3px 3px 6px var(--neu-shadow-dark), inset -3px -3px 6px var(--neu-shadow-light) !important;
+  transition-property: box-shadow !important;
+  transition-duration: 0.4s !important;
+  transition-timing-function: cubic-bezier(0.25, 0.46, 0.45, 0.94) !important;
+}
+
+html body .ant-input:focus,
+html body input.ant-input:focus,
+html body .ant-input-focused {
+  box-shadow: inset 3px 3px 6px var(--neu-shadow-dark), inset -3px -3px 6px var(--neu-shadow-light), 0 0 0 2px var(--neu-accent) !important;
+}
+
+/* === antd 选择器 (毛玻璃) === */
+html body .ant-select-selector {
+  background: var(--neu-bg-glass) !important;
+  backdrop-filter: blur(var(--neu-blur)) !important;
+  -webkit-backdrop-filter: blur(var(--neu-blur)) !important;
+  border: none !important;
+  border-radius: var(--neu-radius-sm) !important;
+  box-shadow: inset 3px 3px 6px var(--neu-shadow-dark), inset -3px -3px 6px var(--neu-shadow-light) !important;
+  transition-property: box-shadow !important;
+  transition-duration: 0.4s !important;
+  transition-timing-function: cubic-bezier(0.25, 0.46, 0.45, 0.94) !important;
+}
+
+/* === antd 弹出层 (毛玻璃) === */
+html body .ant-popover-inner {
+  background: var(--neu-bg-glass) !important;
+  backdrop-filter: blur(var(--neu-blur-heavy)) !important;
+  -webkit-backdrop-filter: blur(var(--neu-blur-heavy)) !important;
+  border-radius: var(--neu-radius-sm) !important;
+  box-shadow: 4px 4px 8px var(--neu-shadow-dark), -4px -4px 8px var(--neu-shadow-light) !important;
+}
+
+/* === antd 悬浮按钮 (毛玻璃 + 动效) === */
+html body .ant-float-btn {
+  background: var(--neu-bg-glass) !important;
+  backdrop-filter: blur(var(--neu-blur)) !important;
+  -webkit-backdrop-filter: blur(var(--neu-blur)) !important;
+  border-radius: 50% !important;
+  box-shadow: 4px 4px 8px var(--neu-shadow-dark), -4px -4px 8px var(--neu-shadow-light) !important;
+  transform: none !important;
+  will-change: transform, box-shadow !important;
+  transition-property: transform, box-shadow !important;
+  transition-duration: 0.4s !important;
+  transition-timing-function: cubic-bezier(0.25, 0.46, 0.45, 0.94) !important;
+}
+
+html body .ant-float-btn:hover {
+  transform: scale(1.15) !important;
+  box-shadow: 6px 6px 14px var(--neu-shadow-dark), -6px -6px 14px var(--neu-shadow-light) !important;
+}
+
+html body .ant-float-btn:active {
+  transform: scale(0.95) !important;
+  box-shadow: inset 2px 2px 4px var(--neu-shadow-dark), inset -2px -2px 4px var(--neu-shadow-light) !important;
+  transition-duration: 0.1s !important;
+}
+
+/* === antd 确认弹窗 === */
+html body .ant-popconfirm {
+  animation: neuModalEnter 0.3s cubic-bezier(0.22, 1, 0.36, 1) both !important;
+}
+
+/* ================================================================
+   暗黑模式 antd 覆盖 - 超高特异性
+   ================================================================ */
+
+.dark html body .ant-card-head-title,
+.dark html body .ant-modal-title,
+html body .dark .ant-card-head-title,
+html body .dark .ant-modal-title {
+  color: var(--neu-accent) !important;
+}
+
+.dark html body .ant-form-item-label > label,
+html body .dark .ant-form-item-label > label {
+  color: var(--neu-text) !important;
+}
+
+.dark html body .ant-typography,
+.dark html body .ant-card-head-title,
+.dark html body .ant-modal-title,
+.dark html body .ant-form-item-label > label,
+html body .dark .ant-typography,
+html body .dark .ant-card-head-title,
+html body .dark .ant-modal-title,
+html body .dark .ant-form-item-label > label {
+  color: var(--neu-text) !important;
+}
+
+.dark html body .ant-popover-inner,
+html body .dark .ant-popover-inner {
+  background: rgba(17, 17, 17, 0.85) !important;
+}
+
+.dark html body .ant-select-dropdown,
+html body .dark .ant-select-dropdown {
+  background: rgba(17, 17, 17, 0.85) !important;
+  backdrop-filter: blur(var(--neu-blur-heavy)) !important;
+  -webkit-backdrop-filter: blur(var(--neu-blur-heavy)) !important;
+}
+
+.dark html body .ant-select-item,
+html body .dark .ant-select-item {
+  color: var(--neu-text) !important;
+}
+
+.dark html body .ant-select-item-option-active,
+html body .dark .ant-select-item-option-active {
+  background: rgba(26, 26, 26, 0.8) !important;
+}
+
+.dark html body .ant-select-item-option-selected,
+html body .dark .ant-select-item-option-selected {
+  background: rgba(26, 26, 26, 0.8) !important;
+  color: var(--neu-accent) !important;
+}
+
+.dark html body .ant-popconfirm-message-title,
+html body .dark .ant-popconfirm-message-title {
+  color: var(--neu-text) !important;
+}
+
+.dark html body .ant-float-btn-default,
+html body .dark .ant-float-btn-default {
+  background: rgba(13, 13, 13, 0.7) !important;
+  color: var(--neu-accent) !important;
+}
+
+.dark html body .ant-message-notice-content,
+html body .dark .ant-message-notice-content {
+  background: rgba(17, 17, 17, 0.85) !important;
+  backdrop-filter: blur(var(--neu-blur)) !important;
+  -webkit-backdrop-filter: blur(var(--neu-blur)) !important;
+  color: var(--neu-text) !important;
+  box-shadow: 4px 4px 8px #050505, -4px -4px 8px #1a1a1a !important;
+}
+
+/* 暗黑模式输入框文字色 */
+.dark html body .ant-input,
+.dark html body .ant-input-affix-wrapper input,
+html body .dark .ant-input,
+html body .dark .ant-input-affix-wrapper input {
+  color: var(--neu-text) !important;
+}
+
+.dark html body .ant-input::placeholder,
+html body .dark .ant-input::placeholder {
+  color: var(--neu-text-muted) !important;
+}
+
+.dark html body .ant-select-selection-item,
+html body .dark .ant-select-selection-item {
+  color: var(--neu-text) !important;
+}
+
+/* ================================================================
+   移动端触控反馈增强
+   ================================================================ */
+
+@media (hover: none) and (pointer: coarse) {
+  .neu-btn:active,
+  .neu-btn-primary:active,
+  html body .ant-btn.ant-btn-primary:active,
+  html body button.ant-btn.ant-btn-primary:active,
+  html body .ant-btn.ant-btn-default:active,
+  html body button.ant-btn.ant-btn-default:active {
+    transform: scale(0.92) !important;
+  }
 }

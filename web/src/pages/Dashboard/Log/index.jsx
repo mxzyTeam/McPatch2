@@ -196,7 +196,7 @@ const Index = () => {
     <>
       {contextHolder}
       <div className="flex flex-col p-10 min-h-screen">
-        <div className="flex justify-start items-center h-8">
+        <div className="flex flex-wrap justify-start items-center gap-2">
           <VersionList versionList={versionList}/>
           <Popconfirm title="风险操作,请再次确认!" onConfirm={taskStatus} okText="确定" cancelText="取消">
             <Button type="primary" size="large" className="ml-2">检查文件修改</Button>
@@ -209,7 +209,7 @@ const Index = () => {
           </Popconfirm>
           <Button type="primary" size="large" className="ml-2" onClick={() => setPackShow(true)}>打包新版本</Button>
           <Popconfirm title="风险操作,请再次确认!" onConfirm={taskRevert} okText="确定" cancelText="取消">
-            <Button type="primary" size="large" className="ml-2">回退整个工作空间</Button>
+            <Button type="primary" size="large" className="ml-2" danger>回退整个工作空间</Button>
           </Popconfirm>
           <Popconfirm title="风险操作,请再次确认!" onConfirm={taskCombine} okText="确定" cancelText="取消">
             <Button type="primary" size="large" className="ml-2">合并更新包</Button>
@@ -226,7 +226,7 @@ const Index = () => {
         </div>
         <div
           ref={logsRef}
-          className="flex-1 mt-8 bg-black dark:bg-gray-800 text-white overflow-auto min-h-[calc(100vh-160px)] max-h-[calc(100vh-160px)]">
+          className="flex-1 mt-8 neu-terminal text-white overflow-auto min-h-[calc(100vh-160px)] max-h-[calc(100vh-160px)]">
           {
             logs.map((item, index) => {
               return (
@@ -251,7 +251,7 @@ const Index = () => {
         onOk={taskPack}
         onCancel={() => setPackShow(false)}>
         <div>
-          <div className="text-base text-gray-400">版本号与详情均可不填,使用默认参数.</div>
+          <div className="text-base text-[#636e72] dark:text-[#9E8E6E]">版本号与详情均可不填,使用默认参数.</div>
           <Input
             className="mt-5"
             placeholder="请输入版本号."

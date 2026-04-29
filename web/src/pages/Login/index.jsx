@@ -3,6 +3,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {userLogin} from "@/store/modules/userStore.js";
 import {message} from "antd";
 import {useEffect, useState} from "react";
+import {useBounceClick, useRipple} from "@/utils/animations.js";
 
 const Index = () => {
 
@@ -12,6 +13,8 @@ const Index = () => {
   const dispatch = useDispatch()
   const [messageApi, contextHolder] = message.useMessage();
   const user = useSelector(state => state.user)
+  const { bounceClass, handleBounceClick, handleAnimationEnd } = useBounceClick();
+  const { ripples, addRipple } = useRipple();
 
   useEffect(() => {
     if (user.username) {
@@ -51,13 +54,18 @@ const Index = () => {
     }
   }
 
+  const handleButtonClick = (e) => {
+    addRipple(e);
+    handleBounceClick(e);
+  };
+
   return (
     <>
       {contextHolder}
       <div className="w-full h-screen flex flex-col items-center justify-center px-4">
-        <div className="max-w-sm w-full text-gray-500 dark:text-white space-y-5">
+        <div className="max-w-sm w-full text-[#636e72] dark:text-[#9E8E6E] space-y-5 neu-card-enter-scale">
           <div className="text-center pb-8">
-            <div className="text-4xl font-bold text-indigo-600">McPatch</div>
+            <div className="text-4xl font-bold text-[#5a7d8f] dark:text-[#D4AF37]">McPatch</div>
           </div>
           <form
             onSubmit={login}
@@ -72,7 +80,8 @@ const Index = () => {
                 name="username"
                 type="text"
                 required
-                className="w-full mt-2 px-3 py-2 bg-transparent outline-none border focus:border-indigo-600 shadow-sm rounded-lg"
+                className="neu-input w-full mt-2 px-4 py-3 text-[#2d3436] dark:text-[#E8D5A3] placeholder:text-[#636e72] dark:placeholder:text-[#9E8E6E]"
+                placeholder="请输入用户名"
               />
             </div>
             <div>
@@ -83,17 +92,32 @@ const Index = () => {
                 name="password"
                 type="password"
                 required
-                className="w-full mt-2 px-3 py-2 bg-transparent outline-none border focus:border-indigo-600 shadow-sm rounded-lg"
+                className="neu-input w-full mt-2 px-4 py-3 text-[#2d3436] dark:text-[#E8D5A3] placeholder:text-[#636e72] dark:placeholder:text-[#9E8E6E]"
+                placeholder="请输入密码"
               />
             </div>
             <div className="flex items-center justify-between text-sm">
               <a href="#"
-                 className="text-center text-indigo-600 dark:text-indigo-500 hover:text-indigo-500 dark:hover:text-indigo-400">忘记密码?</a>
+                 className="text-center text-[#5a7d8f] dark:text-[#D4AF37] hover:text-[#7fa8bc] dark:hover:text-[#D4AF37] transition-colors duration-200">忘记密码?</a>
             </div>
             <button
-              className="w-full px-4 py-2 text-white font-medium bg-indigo-600 hover:bg-indigo-500 active:bg-indigo-600 rounded-lg duration-150"
+              onClick={handleButtonClick}
+              onAnimationEnd={handleAnimationEnd}
+              className={`neu-btn-primary neu-ripple-container w-full px-4 py-3 font-medium ${bounceClass}`}
               type="submit">
               登录
+              {ripples.map(r => (
+                <span
+                  key={r.id}
+                  className="neu-ripple"
+                  style={{
+                    left: r.x - r.size / 2,
+                    top: r.y - r.size / 2,
+                    width: r.size,
+                    height: r.size,
+                  }}
+                />
+              ))}
             </button>
           </form>
         </div>
